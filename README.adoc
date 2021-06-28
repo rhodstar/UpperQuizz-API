@@ -62,9 +62,8 @@ Un estudiante debe registrarse a la aplicación para poder llevar su progreso. E
 esta primera versión solo nos enfocaremos en que los usuarios puedan realizar
 exámenes de simulación.
 
-Un _examen de simulación_ esta conformado por un conjunto de preguntas. 
-
-Dicho conjunto de preguntas se dividen en preguntas por materia, las materias
+Un _examen de simulación_ esta conformado por un conjunto de preguntas. Dicho
+conjunto de preguntas se dividen en preguntas por materia, las materias
 consideradas en un inicio son: 
 
 * Español, 
@@ -73,5 +72,18 @@ consideradas en un inicio son:
 
 La pregunta se conforma de un texto (el cual describe la pregunta) y un conjunto
 de opciones que pueden ser mínimo 2 y máximo 6 opciones. Dichas opciones son
-texto plano por el momento.
+texto plano por el momento. 
 
+Al ser un examen se debe recordar que se debe tener un apartado para guardar las
+respuestas de cada pregunta.
+
+Cuando un estudiante termine de realizar el examen se le califica, se guardan
+los siguientes datos: fecha de realización,puntaje total, puntaje por cada
+materia, respuestas del estudiante y mapa de reactivos correctos e incorrectos.
+Además también se debe guardar el identificador del examen que se realizó.
+La interfaz desplegará los puntajes con gráficas o algo similar que permita ver
+el avance.
+
+== Modelo
+
+image::diplomado.jpg[]
