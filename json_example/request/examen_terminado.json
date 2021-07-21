@@ -1,0 +1,14 @@
+{
+    "evaluacion_id": 1,
+    "aciertos_totales": 2,
+    "fecha_aplicacion": "Date",
+    "puntaje_materia": [{
+            "materia_id": 1,
+            "puntaje:": 3
+        },
+        {
+            "materia_id": 2,
+            "puntaje:": 4
+        }
+    ]
+}

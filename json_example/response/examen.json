@@ -1,0 +1,32 @@
+{
+    "evaluacion_id": 1,
+    "preguntas": [{
+            "texto_pregunta": "¿Quién mato a Colosio?",
+            "opciones": [{
+                    "opcion_id": 1,
+                    "contenido_opcion": "Salinas"
+                },
+                {
+                    "opcion_id": 2,
+                    "contenido_opcion": "ONU"
+                }
+            ],
+            "opcion_correcta_id": 1,
+            "materia_id": 1
+        },
+        {
+            "texto_pregunta": "¿En que año cayo Roma?",
+            "opciones": [{
+                    "opcion_id": 1,
+                    "contenido_opcion": "Salinas"
+                },
+                {
+                    "opcion_id": 2,
+                    "contenido_opcion": "ONU"
+                }
+            ],
+            "opcion_correcta_id": 1,
+            "materia_id": 1
+        }
+    ]
+}
