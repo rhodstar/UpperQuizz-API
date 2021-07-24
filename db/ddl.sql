@@ -13,7 +13,8 @@ CREATE TABLE examen(
 
 CREATE TABLE status_evaluacion(
   status_evaluacion_id  serial primary key,
-  descripcion           varchar(40) not null
+  nombre                varchar(40) not null,
+  descripcion           varchar(200) not null
 );
 
 CREATE TABLE materia(
@@ -23,7 +24,7 @@ CREATE TABLE materia(
 
 CREATE TABLE pregunta(
   pregunta_id serial primary key,
-  pregunta    varchar(2000) not null,
+  texto_pregunta    varchar(2000) not null,
   examen_id   int not null,
   materia_id  int not null,
   foreign key(examen_id) references examen(examen_id),
@@ -33,8 +34,10 @@ CREATE TABLE pregunta(
 
 CREATE TABLE opcion(
   opcion_id   serial primary key,
+  texto_opcion varchar(2000),
   pregunta_id int not null,
-  es_correcta boolean not null
+  es_correcta boolean not null,
+  foreign key(pregunta_id) references pregunta(pregunta_id)
 );
 
 CREATE TABLE evaluacion_alumno(
@@ -42,6 +45,7 @@ CREATE TABLE evaluacion_alumno(
   examen_id                   int not null,
   alumno_id                   int not null,
   status_evaluacion_id        int not null,
+  num_intento                 int not null,
   aciertos_totales  int,
   fecha_aplicacion  timestamp,
   foreign key(examen_id) references examen(examen_id),
@@ -50,9 +54,10 @@ CREATE TABLE evaluacion_alumno(
 );
 
 CREATE TABLE respuestas_alumno(
-  evaluacion_id   int primary key,
+  respuestas_alumno_id   int primary key,
   opcion_id       int not null,
   pregunta_id     int not null,
+  evaluacion_id   int not null,
   foreign key(evaluacion_id) references evaluacion_alumno(evaluacion_id),
   foreign key(opcion_id) references opcion(opcion_id),
   foreign key(pregunta_id) references pregunta(pregunta_id)
