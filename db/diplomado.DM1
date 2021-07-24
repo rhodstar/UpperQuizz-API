@@ -31,7 +31,7 @@ VersionId,Version_ID,Copyright,Global_User_ID,Row_Time_Stamp
 
 Diagram
 DiagramId,Version_ID,VersionId,LastUpdate,CreateDate,ActiveModel,ActiveSubmodel,VSplitterPosition,X,Y,Width,Height,DiagramNameId,AuthorId,CompanyId,VersionNoId,CopyrightStringId,DefinitionId,UnificationOptionId,FileNameId,CopyrightYearStringId,DiagramName,CodePage,SignatureGUID,ReleaseName,Flags,Global_User_ID,Row_Time_Stamp
-1,1,800,07/21/2021 13:53:07G,06/27/2021 21:48:34G,1,1,180,0,0,0,0,26,27,28,29,28,0,30,26,0,diplomado.DM1,1252,NULL,NULL,0,1,0
+1,1,800,07/23/2021 21:22:22G,06/27/2021 21:48:34G,1,1,180,0,0,0,0,26,27,28,29,28,0,30,26,0,diplomado.DM1,1252,NULL,NULL,0,1,0
 
 Model
 DiagramId,ModelId,Model_ID,ModelType,PlatformId,NamePrefix,SpaceHandling,CaseHandling,GenPrimaryKey,GenAlternateKey,GenInversionEntry,GenForeignKey,Notation,ModelNameId,RowOverhead,TableOverhead,IndexOverhead,BlobOverhead,BlobBlockSize,Global_User_ID,Row_Time_Stamp
@@ -313,7 +313,7 @@ DiagramId,ModelId,EntityId,AttributeId,Attribute_ID,Entity_ID,UserDatatypeId,Rul
 1,1,1,1,1,1,0,0,0,0,10,10,0,0,0,0,11,0,10,0,N,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,121,0
 1,1,10,5,50,10,0,0,0,0,70,70,0,0,0,0,11,0,3,0,N,1,1,3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,307,0
 1,1,7,4,30,7,0,0,0,0,55,55,0,0,0,0,11,1,3,0,N,1,1,5,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,232,0
-1,1,4,3,16,4,0,0,0,0,35,35,0,0,0,0,9,0,1000,-1,N,1,1,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,167,0
+1,1,4,3,16,4,0,0,0,0,80,80,0,0,0,0,9,0,1000,-1,N,1,1,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,167,0
 1,1,7,5,38,7,0,0,0,0,60,60,0,0,0,0,11,0,10,0,N,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,258,0
 1,1,4,4,54,4,0,0,0,0,21,21,0,0,21,21,11,0,10,0,N,0,0,3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,313,0
 1,1,1,3,3,1,0,0,0,0,12,12,0,0,0,0,9,0,40,-1,N,1,1,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,125,0
@@ -326,7 +326,7 @@ DiagramId,ModelId,EntityId,AttributeId,Attribute_ID,Entity_ID,UserDatatypeId,Rul
 1,1,3,1,9,3,0,0,0,0,21,21,0,0,0,0,11,0,10,0,N,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,143,0
 1,1,9,4,42,9,0,0,0,0,60,60,0,0,60,60,11,0,10,0,N,0,0,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,275,0
 1,1,9,6,44,9,0,0,0,0,36,36,0,0,36,36,11,0,10,0,N,0,0,3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,285,0
-1,1,3,5,13,3,0,0,0,0,22,22,0,0,0,0,9,0,2000,-1,N,1,1,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,157,0
+1,1,3,5,13,3,0,0,0,0,79,79,0,0,0,0,9,0,2000,-1,N,1,1,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,157,0
 1,1,9,8,57,9,0,0,0,0,21,21,0,0,21,21,11,0,10,0,N,0,0,4,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,323,0
 1,1,9,9,59,9,0,0,0,0,77,77,0,0,0,0,11,0,10,0,N,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,329,0
 1,1,3,7,37,3,0,0,0,0,58,58,0,0,58,58,11,0,10,0,N,0,0,3,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,256,0
@@ -440,14 +440,14 @@ Column_Usage_ID,View_Column_ID,Usage_Type,SequenceNo,Global_User_ID,Row_Time_Sta
 
 EntityDisplay
 DiagramId,ModelId,SubmodelId,EntityId,EntityDisplay_ID,Submodel_ID,Entity_ID,HorizontalPosition,VerticalPosition,cxEntity,cyEntity,cxEntityNode,cyEntityNode,xEntityNode,yEntityNode,DisplayBkgColor,BackgroundColor,Global_User_ID,Row_Time_Stamp
-1,1,1,1,1,1,1,206,-177,-1,-1,0,0,0,0,0,0,120,0
-1,1,1,2,2,1,2,574,-242,-1,-1,0,0,0,0,0,0,131,0
-1,1,1,3,3,1,3,608,-381,-1,-1,0,0,0,0,0,0,142,0
-1,1,1,4,4,1,4,865,-228,-1,-1,0,0,0,0,0,0,162,0
+1,1,1,1,1,1,1,566,-197,-1,-1,0,0,0,0,0,0,120,0
+1,1,1,2,2,1,2,921,-217,-1,-1,0,0,0,0,0,0,131,0
+1,1,1,3,3,1,3,911,-381,-1,-1,0,0,0,0,0,0,142,0
+1,1,1,4,4,1,4,907,-566,-1,-1,0,0,0,0,0,0,162,0
 1,1,1,7,7,1,7,200,-357,-1,-1,0,0,0,0,0,0,219,0
-1,1,1,8,8,1,8,920,-564,-1,-1,0,0,0,0,0,0,237,0
+1,1,1,8,8,1,8,580,-404,-1,-1,0,0,0,0,0,0,237,0
 1,1,1,9,9,1,9,193,-565,-1,-1,0,0,0,0,0,0,264,0
-1,1,1,10,10,1,10,574,-561,-1,-1,0,0,0,0,0,0,292,0
+1,1,1,10,10,1,10,198,-196,-1,-1,0,0,0,0,0,0,292,0
 
 AttributeDisplayOverride
 AttributeDisplayOverride_ID,Attribute_ID,Submodel_ID,Flags,Global_User_ID
@@ -460,16 +460,16 @@ Submodel_SchemaObj_Link_ID,Submodel_ID,MetaTable_ID,Table_Row_ID,cxNode,cyNode,x
 
 RelationshipDisplay
 DiagramId,ModelId,SubmodelId,RelationshipId,RelationshipDisplay_ID,ForeignKey_ID,Submodel_ID,ElbowPosition,DisplayVerbs,DisplayCardinality,PhysicalEntityId,VerbOffsetX,VerbOffsetY,InverseVerbOffsetX,InverseVerbOffsetY,DesiredRoutingStyle,ParentConnectorFlags,ParentConnectorOffsetX,ParentConnectorOffsetY,ParentConnectorPerMils,ChildConnectorFlags,ChildConnectorOffsetX,ChildConnectorOffsetY,ChildConnectorPerMils,cxName,cyName,cxLogicalName,cyLogicalName,cxVerbPhrase,cyVerbPhrase,cxInverseVerbPhrase,cyInverseVerbPhrase,NameOffsetX,NameOffsetY,LogicalNameOffsetX,LogicalNameOffsetY,NameOrientation,LogicalNameOrientation,VerbPhraseOrientation,InverseVerbPhraseOrientation,Global_User_ID,Row_Time_Stamp
-1,1,1,8,8,8,1,5000,N,N,0,0,0,0,0,3,0,7,-59,0,0,-6,68,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,223,0
-1,1,1,9,9,9,1,5000,N,N,0,0,0,0,0,3,0,-128,0,0,0,149,68,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,228,0
-1,1,1,11,11,11,1,5000,N,N,0,0,0,0,0,3,0,-26,42,0,0,145,-29,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,0
+1,1,1,8,8,8,1,5000,N,N,0,0,0,0,0,3,0,-135,-23,0,0,155,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,223,0
+1,1,1,9,9,9,1,5000,N,N,0,0,0,0,0,3,0,-58,-41,0,0,155,47,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,228,0
+1,1,1,11,11,11,1,5000,N,N,0,0,0,0,0,3,0,129,5,0,0,-152,-9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,0
 1,1,1,13,13,13,1,5000,N,N,0,0,0,0,0,3,0,2,-68,0,0,-5,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,274,0
-1,1,1,15,15,15,1,5000,N,N,0,0,0,0,0,3,0,0,51,0,0,-168,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,284,0
-1,1,1,16,16,16,1,5000,N,N,0,0,0,0,0,3,0,-129,-10,0,0,155,-5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,298,0
-1,1,1,17,17,17,1,5000,N,N,0,0,0,0,0,3,0,155,0,0,0,-144,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,303,0
-1,1,1,18,18,18,1,5000,N,N,0,0,0,0,0,3,0,145,11,0,0,2,-51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,0
-1,1,1,19,19,19,1,5000,N,N,0,0,0,0,0,3,0,-4,-41,0,0,-54,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,317,0
-1,1,1,20,20,20,1,5000,N,N,0,0,0,0,0,3,0,-144,-25,0,0,168,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,322,0
+1,1,1,15,15,15,1,5000,N,N,0,0,0,0,0,3,0,-152,4,0,0,169,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,284,0
+1,1,1,16,16,16,1,5000,N,N,0,0,0,0,0,3,0,-129,-10,0,0,155,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,298,0
+1,1,1,17,17,17,1,5000,N,N,0,0,0,0,0,3,0,4,68,0,0,6,-50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,303,0
+1,1,1,18,18,18,1,5000,N,N,0,0,0,0,0,3,0,-2,-51,0,0,2,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,312,0
+1,1,1,19,19,19,1,5000,N,N,0,0,0,0,0,3,0,13,-41,0,0,-1,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,317,0
+1,1,1,20,20,20,1,5000,N,N,0,0,0,0,0,3,0,-92,-51,0,0,140,51,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,322,0
 
 Docking_Position
 Docking_Position_ID,View_Relationship_Display_ID,Child_View_Display_ID,Parent_View_Display_ID,RelationshipDisplay_ID,Parent_Entity_Display,Child_Entity_Display,Parent_Supertype_Display,Child_Supertype_Display,Supertype_Display_ID,Docking_Type,Global_User_ID,Row_Time_Stamp
@@ -479,14 +479,13 @@ Dock_Pos_Disp_Level_ID,Docking_Position_ID,Display_Level,Parent_Side,Child_Side,
 
 Path_Node
 Path_Node_ID,RelationshipDisplay_ID,View_Relationship_Display_ID,SupertypeDisplay_ID,SchemaObj_Edge_ID,Shape_Edge_Display_ID,Lineage_Stream_Display_ID,X,Y,SequenceNo
-1,9,0,0,0,0,0,503,-268,1
-2,11,0,0,0,0,0,1023,-445,1
-3,15,0,0,0,0,0,1017,-146,1
-4,15,0,0,0,0,0,163,-146,2
-5,15,0,0,0,0,0,163,-600,3
-6,17,0,0,0,0,0,584,-409,1
-7,18,0,0,0,0,0,1019,-405,1
-8,20,0,0,0,0,0,529,-441,1
+1,8,0,0,0,0,0,527,-264,1
+2,8,0,0,0,0,0,527,-389,2
+3,9,0,0,0,0,0,991,-362,1
+4,16,0,0,0,0,0,543,-440,1
+5,16,0,0,0,0,0,543,-230,2
+6,20,0,0,0,0,0,971,-504,1
+7,20,0,0,0,0,0,501,-504,2
 
 View_Relationship_Display
 View_Relationship_Display_ID,Entity_ID,Parent_View_ID,Submodel_ID,Child_View_ID,ElbowPosition,Inter_Model_View_Rel_Disp_ID,DesiredRoutingStyle,ParentConnectorFlags,ParentConnectorOffsetX,ParentConnectorOffsetY,ParentConnectorPerMils,ChildConnectorFlags,ChildConnectorOffsetX,ChildConnectorOffsetY,ChildConnectorPerMils,cxName,cyName,NameOffsetX,NameOffsetY,NameOrientation,Global_User_ID,Row_Time_Stamp
@@ -517,17 +516,18 @@ Lineage_Stream_Display_ID,Lineage_Stream_ID,Submodel_ID,DesiredRoutingStyle,Pare
 
 SmallString
 String_Id,Data,Overflow,ConstantString,Row_Time_Stamp
-1,Main,0,0,0
-72,CORREO,0,0,0
-2,Diagram specific data dictionary.,0,0,0
 73,CONTRASENA,0,0,0
-3,Logical,0,0,0
-4,Main Model,0,0,0
-5,Data Movement Rules,0,0,0
+1,Main,0,0,0
+2,Diagram specific data dictionary.,0,0,0
 76,RESPUESTA_ALUMNO,0,0,0
+3,Logical,0,0,0
 77,RESPUESTA_ALUMNO_ID,0,0,0
-7,Y,0,0,0
+4,Main Model,0,0,0
 78,NUM_INTENTO,0,0,0
+5,Data Movement Rules,0,0,0
+79,TEXTO_PREGUNTA,0,0,0
+80,TEXTO_OPCION,0,0,0
+7,Y,0,0,0
 8,ALUMNO,0,0,0
 9,VAR,0,0,0
 10,ALUMNO_ID,0,0,0
@@ -574,6 +574,7 @@ String_Id,Data,Overflow,ConstantString,Row_Time_Stamp
 68,PUNTAJE_MATERIA,0,0,0
 69,PK10,0,0,0
 70,PUNTAJE,0,0,0
+72,CORREO,0,0,0
 
 LargeString
 String_Id,Data,Row_Time_Stamp
@@ -638,14 +639,14 @@ StringUsage_Id,UniqueObject_Id,StringUsageType_Id,String_Id,Row_Time_Stamp
 38,118,39,31,0
 39,129,39,32,0
 40,140,39,33,0
-41,157,14,22,0
-42,157,15,22,0
+41,157,14,79,0
+42,157,15,79,0
 43,158,1,35,0
 44,158,2,35,0
 45,163,14,36,0
 46,163,15,36,0
-47,167,14,35,0
-48,167,15,35,0
+47,167,14,80,0
+48,167,15,80,0
 51,177,15,21,0
 52,177,14,21,0
 53,177,11,21,0
@@ -980,7 +981,7 @@ Identity_Value_ID,Table_Name,Column_Name,Next_Valid_Value,Global_User_ID,Row_Tim
 14,Bound_Dictionary_Object,Bound_Dictionary_Object_ID,1,0,0
 15,CheckConstraints,CheckConstraints_ID,1,0,0
 16,Circular_Layout,Circular_Layout_ID,2,0,0
-17,ColorDefault,ColorDefault_ID,90,0,0
+17,ColorDefault,ColorDefault_ID,93,0,0
 18,Column_Usage,Column_Usage_ID,1,0,0
 19,Components_Layout,Components_Layout_ID,2,0,0
 20,Configuration_Option,Configuration_Option_ID,1,0,0
@@ -1054,7 +1055,7 @@ Identity_Value_ID,Table_Name,Column_Name,Next_Valid_Value,Global_User_ID,Row_Tim
 88,ObjectModification,ObjectModification_ID,1,0,0
 89,Orthogonal_Layout,Orthogonal_Layout_ID,2,0,0
 90,PasteInfo,PasteInfo_ID,1,0,0
-91,Path_Node,Path_Node_ID,9,0,0
+91,Path_Node,Path_Node_ID,8,0,0
 92,Pipeline,Pipeline_ID,1,0,0
 93,Pipeline_Member,Pipeline_Member_ID,1,0,0
 94,Pipeline_Member_Property,Pipeline_Member_Property_ID,1,0,0
