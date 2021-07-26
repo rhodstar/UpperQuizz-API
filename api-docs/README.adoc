@@ -1,0 +1,204 @@
+= UpperQuizz  API
+Creado por Rodrigo Francisco <rhodfra@gmail.com>
+Version 1.0, 26.06.2021
+:toc: 
+:toc-placement!:
+:toclevels: 4                                          
+:toc-title: Contenido
+:imagesdir: ./README.assets/ 
+:source-highlighter: pygments
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+documentación de la API
+
+== Endpoints
+
+Para los siguientes endpoints no es necesario estar logeado
+
+`/upper-quizz/login` ::
+* *POST*
+* _Request body_
++
+[source,json]
+----
+{
+  "correo" : "prueba@gmail.com",
+  "constrasena" : "hola123"
+}
+----
+
+`/upper-quizz/register` ::
+* *POST*
+* _Request body_
++
+[source,json]
+----
+{
+  "correo" : "prueba@gmail.com",
+  "constrasena" : "hola123",
+  "nombre" : "Rodrigo",
+  "apellidos" : "Francisco Pablo"
+}
+----
+
+Para los siguientes endpoints _el usuario debe estar logeado_
+
+`/upper-quizz/evaluacion` ::
+* *GET*
+* Obtiene todas las evaluaciones del usuario
+* _Response_
++
+[source,json]
+----
+{
+  "evaluciones": [
+    {
+      "examen_ID": 1,
+        "nombre_examen": "Examen 1",
+        "status": "I",
+        "aciertos": 9,
+        "num_preguntas_Contestadas": 10,
+        "total_Preguntas": 20,
+        "intentos": 0
+    },
+    {
+      "examen_ID": 2,
+      "nombre_examen": "Examen 2",
+      "status": "T",
+      "aciertos": 9,
+      "num_preguntas_Contestadas": 10,
+      "total_Preguntas": 20,
+      "intentos": 0
+    },
+    {
+      "examen_ID": 3,
+      "nombre_examen": "Examen 2",
+      "status": "N",
+      "aciertos": 9,
+      "num_preguntas_Contestadas": 10,
+      "total_Preguntas": 20,
+      "intentos": 0
+    }
+  ]
+}
+----
+
+`/upper-quizz/evaluacion/:id` ::
+* *GET* 
+* Obtiene los datos un examen, para pintar una por una las preguntas
+* _Response_
++
+[source,json]
+----
+{
+  "evaluacion_id": 1,
+    "preguntas": [
+      {
+        "texto_pregunta": "¿Quién mato a Colosio?",
+        "opciones": [
+          {
+            "opcion_id": 1,
+            "contenido_opcion": "Salinas"
+          },
+          {
+            "opcion_id": 2,
+            "contenido_opcion": "ONU"
+          }
+        ],
+        "opcion_correcta_id": 1,
+        "materia_id": 1
+      },
+      {
+        "texto_pregunta": "¿En que año cayo Roma?",
+        "opciones": [
+          {
+            "opcion_id": 1,
+            "contenido_opcion": "Salinas"
+          },
+          {
+            "opcion_id": 2,
+            "contenido_opcion": "ONU"
+          }
+        ],
+        "opcion_correcta_id": 2,
+        "materia_id": 2
+      }
+  ]
+}
+----
+
+
+`/upper-quizz/historial` ::
+* *GET*
+* Devuelve los puntajes de todas las evaluaciones terminadas
+* _Response_
++
+[source,json]
+----
+{
+  "promedio_general": 10.4,
+    "historial_evaluaciones": [
+      {
+        "nombre_examen": "Evaluacion 1",
+        "puntaje_total": 20,
+        "evaluacion_id": 1
+
+      },
+      {
+        "nombre_examen": "Evaluacion 1",
+        "puntaje_total": 20,
+        "evaluacion_id": 2
+      }
+    ]
+}
+----
+
+`/upper-quizz/historial/:id` ::
+* *GET*
+* Obtiene los puntajes de cada materia 
+
+`/upper-quizz/evaluacion/:id/pregunta/:pregunta-id` ::
+* *POST*
+* Registra la opción seleccionada en un pregunta dada una evaluación
+* _Request body_
++
+[source,json]
+----
+{
+  "evaluacion_id": 1,
+  "opcion_seleccionada": 1,
+  "pregunta_id": 1
+}
+----
+
+`/upper-quizz/evaluación/:id/calificar` ::
+* *POST*
+* Registra el puntaje obtenido por cada una de las materias del examen y el
+puntaje general.
+* _Request body_
++
+[source,json]
+----
+{
+  "evaluacion_id": 1,
+    "aciertos_totales": 2,
+    "fecha_aplicacion": "Date",
+    "puntaje_materia": [
+      {
+        "materia_id": 1,
+        "puntaje:": 3
+      },
+      {
+        "materia_id": 2,
+        "puntaje:": 4
+      }
+    ]
+}
+----
