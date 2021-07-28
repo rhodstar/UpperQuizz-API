@@ -39,83 +39,80 @@ try:
         cur.execute(query)
         row = cur.fetchone()
 
-        res = dict(zip(column_names,row)) 
-
-        return res
+        if row:
+            res = dict(zip(column_names,row)) 
+            return res
+        else:
+            return None
+    
     
     def get_user_by_email(email):
         column_names = ['alumno_id','nombre','apellidos','correo','contrasena']
         query = "select {}, {}, {}, {}, {} from alumno where correo='{}'".format(
                 *column_names,email)
 
-        print(query)
-
         cur.execute(query)
-
         row = cur.fetchone()
 
-        # Check if mail doesnt exist
-
-        res = dict(zip(column_names,row)) 
-
-        return res
-    
+        if row:
+            res = dict(zip(column_names,row)) 
+            return res
+        else:
+            return None
+except:
+    print("There was an error while connecting to DB")
 
 ##############################################################################
 ##########              Token function decorator                    ##########
 ##############################################################################
 
-    def token_auth_required(f):
-        @wraps(f)
-        def decorated(*args,**kwargs):
-            token = None
+def token_auth_required(f):
+    @wraps(f)
+    def decorated(*args,**kwargs):
+        token = None
 
-            if 'x-access-token' in request.headers:
-                token = request.headers['x-access-token']
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
 
-            if not token:
-                return jsonify({'message': 'Token is missing'}), 401
+        if not token:
+            return jsonify({'message': 'Token is missing'}), 401
 
-            try:
-                data = jwt.decode(token,app.config['SECRET_KEY'])
-                current_user = get_user_by_id(data['id'])
-            except:
-                return jsonify({'message': 'Token is missing'}), 401
+        try:
+            data = jwt.decode(token,app.config['SECRET_KEY'])
+            current_user = get_user_by_id(data['id'])
+        except:
+            return jsonify({'message': 'Token is missing'}), 401
 
-            return f(current_user,**args,**kwargs)
+        return f(current_user,**args,**kwargs)
 
-        return decorated
+    return decorated
 
 ##############################################################################
 ##########                      Endpoints                           ##########
 ##############################################################################
 
-    @app.route('/login',methods=['POST'])
-    def login():
-        data = request.get_json()
+@app.route('/login',methods=['POST'])
+def login():
+    data = request.get_json()
 
-        print(data)
-
-        if not data['correo'] or  not data['contrasena']:
-            return make_response('No se pudo verificar',404,
-                    {'WWW-Authenticate': 'Basic realm="Login required"'})
-
-        user = get_user_by_email(data['correo'])
-
-        if not user:
-            return make_response('No se pudo verificar',404,
-                    {'WWW-Authenticate': 'Basic realm="Login required"'})
-
-        if data['contrasena'] == user['contrasena']:
-            token = jwt.encode({'alumno_id':user['alumno_id'], 
-                'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
-                app.config['SECRET_KEY'])
-
-            return jsonify({'token': token})
-
+    if not data['correo'] or  not data['contrasena']:
         return make_response('No se pudo verificar',404,
                 {'WWW-Authenticate': 'Basic realm="Login required"'})
 
-except:
-    print("There was an error while connecting to DB")
+    user = get_user_by_email(data['correo'])
+
+    if not user:
+        return make_response('No se pudo verificar',404,
+                {'WWW-Authenticate': 'Basic realm="Login required"'})
+
+    if data['contrasena'] == user['contrasena']:
+        token = jwt.encode({'alumno_id':user['alumno_id'], 
+            'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
+            app.config['SECRET_KEY'])
+
+        return jsonify({'token': token})
+
+    return make_response('No se pudo verificar',404,
+            {'WWW-Authenticate': 'Basic realm="Login required"'})
+
 
