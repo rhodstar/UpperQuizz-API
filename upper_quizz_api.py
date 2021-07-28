@@ -1,79 +1,21 @@
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
-from dotenv import load_dotenv
-import psycopg2
-import os
 import jwt
 import datetime
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from models import *
+
 app = Flask(__name__)
-
-load_dotenv()
-
-DATABASE = os.getenv('DATABASE')
-DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
-DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
 
 app.config['SECRET_KEY'] = 'regteamdevelopment'
 app.config['DEBUG'] = True
 
 CORS(app)
 
-ENDPOINT_BASE = 'upper-quizz/v1/'
+ENDPOINT_BASE = '/v1/'
 
-con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
-        password=DATABASE_PASSWORD)
-
-cur = con.cursor()
-
-##############################################################################
-##########                      Query Builders                      ##########
-##############################################################################
-
-def get_user_by_id(id):
-    column_names = ['alumno_id','nombre','apellidos','correo','contrasena']
-    query = 'select {}, {}, {}, {}, {} from alumno where alumno_id = {}'.format(
-            *column_names,id)
-    cur.execute(query)
-    row = cur.fetchone()
-
-    if row:
-        res = dict(zip(column_names,row)) 
-        return res
-    else:
-        return None
-
-
-def get_user_by_email(email):
-    column_names = ['alumno_id','nombre','apellidos','correo','contrasena']
-    query = "select {}, {}, {}, {}, {} from alumno where correo='{}'".format(
-            *column_names,email)
-
-    cur.execute(query)
-    row = cur.fetchone()
-
-    if row:
-        res = dict(zip(column_names,row)) 
-        return res
-    else:
-        return None
-
-def save_user(user):
-    query = "insert into alumno(nombre,apellidos,correo,contrasena) values(%s, %s, %s, %s)"
-    try:
-        cur.execute(query,(user['nombre'],user['apellidos'],user['correo'],user['contrasena']))
-        con.commit()
-        return True
-    except Exception:
-        return False
-
-
-
-##############################################################################
-##########              Token function decorator                    ##########
-##############################################################################
 
 def token_auth_required(f):
     @wraps(f)
@@ -104,7 +46,7 @@ def token_auth_required(f):
 def login():
     data = request.get_json()
 
-    if not data['correo'] or  not data['contrasena']:
+    if 'correo' not in data or  'contrasena' not in data:
         return make_response('No se pudo verificar',404,
                 {'WWW-Authenticate': 'Basic realm="Login required"'})
 
@@ -115,7 +57,8 @@ def login():
                 {'WWW-Authenticate': 'Basic realm="Login required"'})
 
     #TODO:- Update using hash password
-    if data['contrasena'] == user['contrasena']:
+    if check_password_hash(user['contrasena'],data['contrasena']):
+    # if data['contrasena'] == user['contrasena']:
         token = jwt.encode({'alumno_id':user['alumno_id'], 
             'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
             app.config['SECRET_KEY'])
@@ -132,11 +75,11 @@ def register():
     print(request)
     data = request.get_json()
 
-    if 'nombre' not in data or 'apellidos' not in data or 'correo' not in data or 'contrasena' not in data:
+    if ('nombre' not in data or 'apellidos' not in data or 'correo' not in 
+            data or 'contrasena' not in data):
         return make_response('Falta algun campo',404,
                 {'WWW-Authenticate': 'Basic realm="Fallo el registro"'})
 
-    # Check if email isnt in DB
     hashed_password = generate_password_hash(data['contrasena'],method='sha256')
 
     user = data
