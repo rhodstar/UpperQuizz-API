@@ -1,9 +1,9 @@
 CREATE TABLE alumno(
   alumno_id   serial primary key,
-  nombre      varchar(50) not null,
-  apellidos   varchar(50) not null,
+  nombre      varchar(60) not null,
+  apellidos   varchar(60) not null,
   correo      varchar(255) unique not null,
-  contrasena  varchar(60) not null
+  contrasena  varchar(255) not null
 );
 
 CREATE TABLE examen(

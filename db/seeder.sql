@@ -37,6 +37,5 @@ insert into materia(nombre) values('Literatura');
 insert into materia(nombre) values('Geografía');
 insert into materia(nombre) values('Filosofía');
 
-\i alumno.sql
 \i pregunta.sql
 \i opcion.sql
