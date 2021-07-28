@@ -22,27 +22,27 @@ documentación de la API
 
 Para los siguientes endpoints no es necesario estar logeado
 
-`/upper-quizz/login` ::
+`upper-quizz.heroku.com/v1/login` ::
 * *POST*
 * _Request body_
 +
 [source,json]
 ----
 {
-  "correo" : "prueba@gmail.com",
-  "constrasena" : "hola123"
+  "correo" : "rodrigo@gmail.com",
+  "contrasena" : "diplomado123"
 }
 ----
 
-`/upper-quizz/register` ::
+`upper-quizz.heroku.com/v1/register` ::
 * *POST*
 * _Request body_
 +
 [source,json]
 ----
 {
-  "correo" : "prueba@gmail.com",
-  "constrasena" : "hola123",
+  "correo" : "rodrigo@gmail.com",
+  "contrasena" : "diplomado123",
   "nombre" : "Rodrigo",
   "apellidos" : "Francisco Pablo"
 }
@@ -50,7 +50,7 @@ Para los siguientes endpoints no es necesario estar logeado
 
 Para los siguientes endpoints _el usuario debe estar logeado_
 
-`/upper-quizz/evaluacion` ::
+`upper-quizz.heroku.com/v1/evaluacion` ::
 * *GET*
 * Obtiene todas las evaluaciones del usuario
 * _Response_
@@ -64,8 +64,8 @@ Para los siguientes endpoints _el usuario debe estar logeado_
         "nombre_examen": "Examen 1",
         "status": "I",
         "aciertos": 9,
-        "num_preguntas_Contestadas": 10,
-        "total_Preguntas": 20,
+        "num_preguntas_contestadas": 10,
+        "total_preguntas": 20,
         "intentos": 0
     },
     {
@@ -73,8 +73,8 @@ Para los siguientes endpoints _el usuario debe estar logeado_
       "nombre_examen": "Examen 2",
       "status": "T",
       "aciertos": 9,
-      "num_preguntas_Contestadas": 10,
-      "total_Preguntas": 20,
+      "num_preguntas_contestadas": 10,
+      "total_preguntas": 20,
       "intentos": 0
     },
     {
@@ -82,15 +82,15 @@ Para los siguientes endpoints _el usuario debe estar logeado_
       "nombre_examen": "Examen 2",
       "status": "N",
       "aciertos": 9,
-      "num_preguntas_Contestadas": 10,
-      "total_Preguntas": 20,
+      "num_preguntas_contestadas": 10,
+      "total_preguntas": 20,
       "intentos": 0
     }
   ]
 }
 ----
 
-`/upper-quizz/evaluacion/:id` ::
+`upper-quizz.heroku.com/v1/evaluacion/:id` ::
 * *GET* 
 * Obtiene los datos un examen, para pintar una por una las preguntas
 * _Response_
@@ -135,7 +135,7 @@ Para los siguientes endpoints _el usuario debe estar logeado_
 ----
 
 
-`/upper-quizz/historial` ::
+`upper-quizz.heroku.com/v1/historial` ::
 * *GET*
 * Devuelve los puntajes de todas las evaluaciones terminadas
 * _Response_
@@ -160,11 +160,11 @@ Para los siguientes endpoints _el usuario debe estar logeado_
 }
 ----
 
-`/upper-quizz/historial/:id` ::
+`upper-quizz.heroku.com/v1/historial/:id` ::
 * *GET*
 * Obtiene los puntajes de cada materia 
 
-`/upper-quizz/evaluacion/:id/pregunta/:pregunta-id` ::
+`upper-quizz.heroku.com/v1/evaluacion/:id/pregunta/:pregunta-id` ::
 * *POST*
 * Registra la opción seleccionada en un pregunta dada una evaluación
 * _Request body_
@@ -178,7 +178,7 @@ Para los siguientes endpoints _el usuario debe estar logeado_
 }
 ----
 
-`/upper-quizz/evaluación/:id/calificar` ::
+`upper-quizz.heroku.com/v1/evaluación/:id/calificar` ::
 * *POST*
 * Registra el puntaje obtenido por cada una de las materias del examen y el
 puntaje general.
