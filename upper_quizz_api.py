@@ -17,50 +17,59 @@ DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
 DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
 
 app.config['SECRET_KEY'] = 'regteamdevelopment'
+app.config['DEBUG'] = True
 
 CORS(app)
 
 ENDPOINT_BASE = 'upper-quizz/v1/'
 
-try: 
-    con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
-            password=DATABASE_PASSWORD)
+con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
+        password=DATABASE_PASSWORD)
 
-    cur = con.cursor()
+cur = con.cursor()
 
 ##############################################################################
 ##########                      Query Builders                      ##########
 ##############################################################################
 
-    def get_user_by_id(id):
-        column_names = ['alumno_id','nombre','apellidos','correo','contrasena']
-        query = 'select {}, {}, {}, {}, {} from alumno where alumno_id = {}'.format(
-                *column_names,id)
-        cur.execute(query)
-        row = cur.fetchone()
+def get_user_by_id(id):
+    column_names = ['alumno_id','nombre','apellidos','correo','contrasena']
+    query = 'select {}, {}, {}, {}, {} from alumno where alumno_id = {}'.format(
+            *column_names,id)
+    cur.execute(query)
+    row = cur.fetchone()
 
-        if row:
-            res = dict(zip(column_names,row)) 
-            return res
-        else:
-            return None
-    
-    
-    def get_user_by_email(email):
-        column_names = ['alumno_id','nombre','apellidos','correo','contrasena']
-        query = "select {}, {}, {}, {}, {} from alumno where correo='{}'".format(
-                *column_names,email)
+    if row:
+        res = dict(zip(column_names,row)) 
+        return res
+    else:
+        return None
 
-        cur.execute(query)
-        row = cur.fetchone()
 
-        if row:
-            res = dict(zip(column_names,row)) 
-            return res
-        else:
-            return None
-except:
-    print("There was an error while connecting to DB")
+def get_user_by_email(email):
+    column_names = ['alumno_id','nombre','apellidos','correo','contrasena']
+    query = "select {}, {}, {}, {}, {} from alumno where correo='{}'".format(
+            *column_names,email)
+
+    cur.execute(query)
+    row = cur.fetchone()
+
+    if row:
+        res = dict(zip(column_names,row)) 
+        return res
+    else:
+        return None
+
+def save_user(user):
+    query = "insert into alumno(nombre,apellidos,correo,contrasena) values(%s, %s, %s, %s)"
+    try:
+        cur.execute(query,(user['nombre'],user['apellidos'],user['correo'],user['contrasena']))
+        con.commit()
+        return True
+    except Exception:
+        return False
+
+
 
 ##############################################################################
 ##########              Token function decorator                    ##########
@@ -105,6 +114,7 @@ def login():
         return make_response('No se pudo verificar',404,
                 {'WWW-Authenticate': 'Basic realm="Login required"'})
 
+    #TODO:- Update using hash password
     if data['contrasena'] == user['contrasena']:
         token = jwt.encode({'alumno_id':user['alumno_id'], 
             'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
@@ -115,4 +125,29 @@ def login():
     return make_response('No se pudo verificar',404,
             {'WWW-Authenticate': 'Basic realm="Login required"'})
 
+
+@app.route('/register',methods=['POST'])
+def register():
+
+    print(request)
+    data = request.get_json()
+
+    if 'nombre' not in data or 'apellidos' not in data or 'correo' not in data or 'contrasena' not in data:
+        return make_response('Falta algun campo',404,
+                {'WWW-Authenticate': 'Basic realm="Fallo el registro"'})
+
+    # Check if email isnt in DB
+    hashed_password = generate_password_hash(data['contrasena'],method='sha256')
+
+    user = data
+    user['contrasena'] = hashed_password
+
+    # Perform insert
+    if save_user(user) :
+        return jsonify({'message': 'Usuario insertado correctamente'}), 200
+    else:
+        return jsonify({'message': 'Algo salio mal'}), 403
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
