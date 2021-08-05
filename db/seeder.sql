@@ -36,6 +36,3 @@ insert into materia(nombre) values('Historia de México');
 insert into materia(nombre) values('Literatura');
 insert into materia(nombre) values('Geografía');
 insert into materia(nombre) values('Filosofía');
-
-\i pregunta.sql
-\i opcion.sql
