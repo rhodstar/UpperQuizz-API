@@ -36,9 +36,6 @@ def get_user_by_email(email):
     cur.execute(query)
     row = cur.fetchone()
 
-    cur.close()
-    con.close()
-
     if row:
         res = dict(zip(column_names,row)) 
         return res
@@ -56,4 +53,24 @@ def save_user(user):
     except Exception:
         return False
 
+
+def get_user_evaluations(user):
+    query = ("select e.examen_id,e.nombre, s.nombre, aciertos_totales, num_intento "
+    "from evaluacion_alumno ev,status_evaluacion s, examen e "
+    "where ev.examen_id = e.examen_id "
+    "and ev.status_evaluacion_id = s.status_evaluacion_id "
+    "and alumno_id = "+str(user['alumno_id']))
+
+    cur.execute(query)
+
+    rows = cur.fetchall()
+
+    keys = ['examen_id',"nombre_examen","status","aciertos_totales","num_intento"] 
+
+    evaluations = []
+    
+    for row in rows:
+        evaluations.append(dict(zip(keys,row)))
+
+    return evaluations
 

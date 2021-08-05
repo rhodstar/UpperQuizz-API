@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, make_response
+import json
 from flask_cors import CORS
 import jwt
 import datetime
@@ -6,6 +7,7 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from models import *
+import traceback
 
 app = Flask(__name__)
 
@@ -29,12 +31,14 @@ def token_auth_required(f):
             return jsonify({'message': 'Token is missing'}), 401
 
         try:
-            data = jwt.decode(token,app.config['SECRET_KEY'])
-            current_user = get_user_by_id(data['id'])
+            print("token: "+token)
+            data = jwt.decode(token,app.config['SECRET_KEY'],algorithms="HS256")
+            current_user = get_user_by_id(data['alumno_id'])
         except:
-            return jsonify({'message': 'Token is missing'}), 401
+            traceback.print_exc()
+            return jsonify({'message': 'Token is missing, carefull'}), 401
 
-        return f(current_user,**args,**kwargs)
+        return f(current_user,*args,**kwargs)
 
     return decorated
 
@@ -56,13 +60,10 @@ def login():
         return make_response('No se pudo verificar',404,
                 {'WWW-Authenticate': 'Basic realm="Login required"'})
 
-    #TODO:- Update using hash password
     if check_password_hash(user['contrasena'],data['contrasena']):
-    # if data['contrasena'] == user['contrasena']:
         token = jwt.encode({'alumno_id':user['alumno_id'], 
             'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
-            app.config['SECRET_KEY'])
-
+            app.config['SECRET_KEY'],algorithm="HS256")
         return jsonify({'token': token})
 
     return make_response('No se pudo verificar',404,
@@ -90,6 +91,15 @@ def register():
         return jsonify({'message': 'Usuario insertado correctamente'}), 200
     else:
         return jsonify({'message': 'Algo salio mal'}), 403
+
+
+@app.route('/evaluaciones',methods=['GET'])
+@token_auth_required
+def evaluaciones(current_user):
+
+    evaluations = get_user_evaluations(current_user)
+
+    return json.dumps({'evaluaciones':evaluations})
 
 if __name__ == '__main__':
     app.run(debug=True)
