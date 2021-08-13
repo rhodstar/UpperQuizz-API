@@ -69,8 +69,61 @@ def get_user_evaluations(user):
 
     evaluations = []
     
+    #TODO:- Check null case
     for row in rows:
         evaluations.append(dict(zip(keys,row)))
 
     return evaluations
+
+def get_evaluation_by_id(evaluacion_id):
+    keys = ["pregunta_id","texto_pregunta","materia_id","opcion_id","texto_opcion"]
+    query = '''
+    select p.pregunta_id,p.texto_pregunta,p.materia_id,o.opcion_id,o.texto_opcion
+    from pregunta p, opcion o
+    where p.examen_id = (
+      select examen_id from evaluacion_alumno 
+      where evaluacion_id = {}
+    )
+    and p.pregunta_id = o.pregunta_id
+    order by p.pregunta_id'''. format(evaluacion_id)
+
+    cur.execute(query)
+
+    rows = cur.fetchall()
+
+    if not rows:
+        return None
+    
+    questions = [dict(zip(keys,row)) for row in rows]
+
+    questions_formated = []
+    question_id_counter = questions[0]['pregunta_id']
+    
+    # Get max question id and max opcion id
+    question_ids = [q['pregunta_id'] for q in questions]
+    options_ids = [q['opcion_id'] for q in questions]
+    question_id_max = max(question_ids)
+    opcion_id_max = max(options_ids)
+
+    options = []
+    for q in questions:
+        if q['pregunta_id'] != question_id_counter:
+
+            question['opciones'] = options
+            questions_formated.append(question)
+            options = []
+            question_id_counter +=1
+
+        question = {}
+        question['pregunta_id'] = q['pregunta_id'] 
+        question['texto_pregunta'] = q['texto_pregunta'] 
+        options.append({'opcion_id': q['opcion_id'],'texto_opcion': q['texto_opcion']})
+
+        if q['pregunta_id'] == question_id_max and q['opcion_id'] == opcion_id_max:
+            question['opciones'] = options
+            questions_formated.append(question)
+            options = []
+            question_id_counter +=1
+
+    return questions_formated
 

@@ -101,6 +101,17 @@ def evaluaciones(current_user):
 
     return json.dumps({'evaluaciones':evaluations})
 
+@app.route('/evaluaciones/<evaluacion_id>',methods=['GET'])
+def evaluacion(evaluacion_id):
+
+    evaluation = get_evaluation_by_id(evaluacion_id)
+
+    if evaluation:
+        return jsonify({'evaluacion':evaluation})
+    else:
+        return jsonify({'message':'No se encontró la evaluación solicitada'}), 400
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
