@@ -112,6 +112,22 @@ def evaluacion(evaluacion_id):
         return jsonify({'message':'No se encontró la evaluación solicitada'}), 400
 
 
+@app.route('/evaluacion/<evaluacion_id>/pregunta/<pregunta_id>',methods=['POST'])
+@token_auth_required
+def guardar_evaluacion_pregunta(current_user,evaluacion_id,pregunta_id):
+
+    data = request.get_json()
+
+    if 'opcion_seleccionada_id' not in data:
+        return jsonify({'message':'No se mandó la opcion seleccionada'}), 400
+
+    opcion_seleccionada_id = data['opcion_seleccionada_id']
+
+    if save_student_answer(evaluacion_id,pregunta_id,opcion_seleccionada_id):
+        return jsonify({'message':'Respuesta guardada exitosamente'})
+    else:
+        return jsonify({'message':'Error al guardar la respuesta'}), 400
+
+
 if __name__ == '__main__':
     app.run(debug=True)
-

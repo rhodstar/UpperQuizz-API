@@ -135,3 +135,16 @@ def get_evaluation_by_id(evaluacion_id):
 
     return questions_formated
 
+def save_student_answer(evaluation_id,question_id,selected_option_id):
+    # Using UPSERT
+    query = ("insert into respuestas_alumno(evaluacion_id,pregunta_id,opcion_id) "
+    "values(%s,%s,%s) on conflict(evaluacion_id,pregunta_id) "
+    "do update set opcion_id= EXCLUDED.opcion_id")
+
+    try:
+        cur.execute(query,(evaluation_id,question_id,selected_option_id))
+        con.commit()
+        return True
+    except Exception:
+        
+        return False
