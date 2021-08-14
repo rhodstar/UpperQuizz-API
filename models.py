@@ -76,9 +76,11 @@ def get_user_evaluations(user):
     return evaluations
 
 def get_evaluation_by_id(evaluacion_id):
-    keys = ["pregunta_id","texto_pregunta","materia_id","opcion_id","texto_opcion"]
+    keys = ["pregunta_id","texto_pregunta","materia_id","opcion_id",
+            "texto_opcion", "es_correcta"]
     query = '''
-    select p.pregunta_id,p.texto_pregunta,p.materia_id,o.opcion_id,o.texto_opcion
+    select p.pregunta_id,p.texto_pregunta,p.materia_id,
+    o.opcion_id,o.texto_opcion,o.es_correcta
     from pregunta p, opcion o
     where p.examen_id = (
       select examen_id from evaluacion_alumno 
@@ -106,10 +108,11 @@ def get_evaluation_by_id(evaluacion_id):
     opcion_id_max = max(options_ids)
 
     options = []
+    correct_option_id = -1
     for q in questions:
         if q['pregunta_id'] != question_id_counter:
-
             question['opciones'] = options
+            question['opcion_correcta_id'] = correct_option_id
             questions_formated.append(question)
             options = []
             question_id_counter +=1
@@ -117,10 +120,15 @@ def get_evaluation_by_id(evaluacion_id):
         question = {}
         question['pregunta_id'] = q['pregunta_id'] 
         question['texto_pregunta'] = q['texto_pregunta'] 
+        question['materia_id'] = q['materia_id'] 
         options.append({'opcion_id': q['opcion_id'],'texto_opcion': q['texto_opcion']})
+
+        if q['es_correcta']:
+            correct_option_id = q['opcion_id']
 
         if q['pregunta_id'] == question_id_max and q['opcion_id'] == opcion_id_max:
             question['opciones'] = options
+            question['opcion_correcta_id'] = correct_option_id
             questions_formated.append(question)
             options = []
             question_id_counter +=1

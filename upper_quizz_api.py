@@ -93,7 +93,7 @@ def register():
         return jsonify({'message': 'Algo salio mal'}), 403
 
 
-@app.route('/evaluaciones',methods=['GET'])
+@app.route('/evaluacion',methods=['GET'])
 @token_auth_required
 def evaluaciones(current_user):
 
@@ -101,7 +101,7 @@ def evaluaciones(current_user):
 
     return json.dumps({'evaluaciones':evaluations})
 
-@app.route('/evaluaciones/<evaluacion_id>',methods=['GET'])
+@app.route('/evaluacion/<evaluacion_id>',methods=['GET'])
 def evaluacion(evaluacion_id):
 
     evaluation = get_evaluation_by_id(evaluacion_id)
