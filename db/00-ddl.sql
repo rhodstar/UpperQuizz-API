@@ -54,13 +54,14 @@ CREATE TABLE evaluacion_alumno(
 );
 
 CREATE TABLE respuestas_alumno(
-  respuestas_alumno_id   int primary key,
+  respuestas_alumno_id   serial primary key,
   opcion_id       int not null,
   pregunta_id     int not null,
   evaluacion_id   int not null,
   foreign key(evaluacion_id) references evaluacion_alumno(evaluacion_id),
   foreign key(opcion_id) references opcion(opcion_id),
-  foreign key(pregunta_id) references pregunta(pregunta_id)
+  foreign key(pregunta_id) references pregunta(pregunta_id),
+  unique(evaluacion_id,pregunta_id)
 );
 
 CREATE TABLE puntaje_materia(
