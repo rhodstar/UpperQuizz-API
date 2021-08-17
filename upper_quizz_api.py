@@ -166,6 +166,25 @@ def guardar_calificacion_evaluacion(current_user,evaluacion_id):
     else:
         return jsonify({'message':'Algo salió mal a la hora de guardar el examen'}), 400
 
+@app.route('/historial',methods=['GET'])
+@token_auth_required
+def historial(current_user):
+    history = get_evaluation_history(current_user['alumno_id'])
+
+    if history:
+        return jsonify({'historial':history})
+    else:
+        return jsonify({'historial':{}})
+
+@app.route('/historial/<historial_id>',methods=['GET'])
+@token_auth_required
+def historial_by_id(current_user,historial_id):
+    history = get_evaluation_history_by_id(current_user['alumno_id'],historial_id)
+
+    if history:
+        return jsonify({'historial':history})
+    else:
+        return jsonify({'historial':{}})
 
 if __name__ == '__main__':
     app.run(debug=True)

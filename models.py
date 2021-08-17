@@ -151,14 +151,11 @@ def save_student_answer(evaluation_id,question_id,selected_option_id):
 def save_student_scores(evaluation_id,scores):
     total_score = scores['aciertos_totales']
     aplication_date = scores['fecha_aplicacion']
-
     subject_scores = scores['puntaje_materia']
 
-    query = ("update evaluacion_alumno set aciertos_totales={},fecha_aplicacion='{}' "
-    "where evaluacion_id={}").format(total_score,aplication_date,evaluation_id)
-
-    # query = ("update evaluacion_alumno set aciertos_totales={} "
-    # "where evaluacion_id={}").format(total_score,evaluation_id)
+    query = ("update evaluacion_alumno set aciertos_totales={},fecha_aplicacion='{}', "
+    "status_evaluacion_id=2, num_intento=num_intento+1 where evaluacion_id={}").format(
+        total_score,aplication_date,evaluation_id)
 
     query_scores = ("insert into puntaje_materia(evaluacion_id,materia_id,puntaje) "
     "values(%s,%s,%s)")
@@ -175,3 +172,60 @@ def save_student_scores(evaluation_id,scores):
         return True
     except Exception:
         return False
+    
+def get_evaluation_history(student_id):
+    keys = ["evaluacion_id","nombre_examen","puntaje_total","fecha_aplicacion"]
+    query = ("select ev.evaluacion_id,e.nombre, ev.aciertos_totales, "
+    "ev.fecha_aplicacion "
+    "from evaluacion_alumno ev,examen e where e.examen_id=ev.examen_id "
+    "and alumno_id={} and status_evaluacion_id=2").format(student_id)
+
+    cur.execute(query)
+
+    rows = cur.fetchall()
+
+    if not rows:
+        return None
+    
+    history = [dict(zip(keys,row)) for row in rows]
+
+    return history
+
+def get_evaluation_history_by_id(student_id,evaluation_id):
+    keys = ["aciertos_totales","fecha_aplicacion",
+        "num_intento","materia_id","nombre_materia","puntaje"]
+
+    query = ("select ev.aciertos_totales,ev.fecha_aplicacion, "
+    "ev.num_intento, pm.materia_id,m.nombre,pm.puntaje "
+    "from evaluacion_alumno ev, puntaje_materia pm, materia m "
+    "where ev.evaluacion_id=pm.evaluacion_id and m.materia_id=pm.materia_id "
+    "and ev.evaluacion_id={}").format(evaluation_id)
+
+    cur.execute(query)
+    rows = cur.fetchall()
+
+    if not rows:
+        return None
+    
+    history = [dict(zip(keys,row)) for row in rows]
+
+    aciertos_totales = history[0]['aciertos_totales']
+    fecha_aplicacion = history[0]['fecha_aplicacion']
+    num_intento = history[0]['num_intento']
+
+    puntaje_materia = [{
+        "materia_id":row["materia_id"],
+        "nombre_materia":row["nombre_materia"],
+        "puntaje":row["puntaje"]
+    } for row in history]
+
+    history_formated = {
+        "evaluacion_id": evaluation_id,
+        "aciertos_totales":aciertos_totales,
+        "num_intento":num_intento,
+        "puntaje_materia":puntaje_materia
+    }
+
+    return history_formated
+
+
