@@ -65,9 +65,12 @@ CREATE TABLE respuestas_alumno(
 );
 
 CREATE TABLE puntaje_materia(
+  puntaje_materia_id serial primary key,
   materia_id      int not null,
   evaluacion_id   int not null,
   puntaje         int not null,
   foreign key(evaluacion_id) references evaluacion_alumno(evaluacion_id),
-  foreign key(materia_id) references materia(materia_id)
+  foreign key(materia_id) references materia(materia_id),
+  unique(evaluacion_id,materia_id)
+
 );
