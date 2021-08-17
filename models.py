@@ -146,5 +146,32 @@ def save_student_answer(evaluation_id,question_id,selected_option_id):
         con.commit()
         return True
     except Exception:
-        
+        return False
+
+def save_student_scores(evaluation_id,scores):
+    total_score = scores['aciertos_totales']
+    aplication_date = scores['fecha_aplicacion']
+
+    subject_scores = scores['puntaje_materia']
+
+    query = ("update evaluacion_alumno set aciertos_totales={},fecha_aplicacion='{}' "
+    "where evaluacion_id={}").format(total_score,aplication_date,evaluation_id)
+
+    # query = ("update evaluacion_alumno set aciertos_totales={} "
+    # "where evaluacion_id={}").format(total_score,evaluation_id)
+
+    query_scores = ("insert into puntaje_materia(evaluacion_id,materia_id,puntaje) "
+    "values(%s,%s,%s)")
+
+    try:
+        cur.execute(query)
+        for subject in subject_scores:
+            cur.execute(query_scores,
+                (evaluation_id,subject['materia_id'], subject['puntaje']))
+            con.commit()
+
+        con.commit()
+
+        return True
+    except Exception:
         return False

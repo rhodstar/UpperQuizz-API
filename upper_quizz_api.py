@@ -31,7 +31,6 @@ def token_auth_required(f):
             return jsonify({'message': 'Token is missing'}), 401
 
         try:
-            print("token: "+token)
             data = jwt.decode(token,app.config['SECRET_KEY'],algorithms="HS256")
             current_user = get_user_by_id(data['alumno_id'])
         except:
@@ -127,6 +126,45 @@ def guardar_evaluacion_pregunta(current_user,evaluacion_id,pregunta_id):
         return jsonify({'message':'Respuesta guardada exitosamente'})
     else:
         return jsonify({'message':'Error al guardar la respuesta'}), 400
+
+
+@app.route('/evaluacion/<evaluacion_id>/calificar',methods=['POST'])
+@token_auth_required
+def guardar_calificacion_evaluacion(current_user,evaluacion_id):
+
+    data = request.get_json()
+    if ('aciertos_totales' not in data or 'fecha_aplicacion' not in data
+    or 'puntaje_materia' not in data):
+        return jsonify({'message':'Faltan campos en el cuerpo de la evaluacion'}), 400
+
+    if type(data['puntaje_materia']) != list:
+        return jsonify({'message':'Los puntajes no tienen el formato adecuado'}), 400
+
+    puntaje_materia = data['puntaje_materia']
+
+    original_subject_ids = [1,2,3,4,5,6,7,8,9,10] # Most be ordered
+    if len(puntaje_materia) != len(original_subject_ids):
+        return jsonify({'message':'Faltan los puntajes de algunas materias'}), 400
+
+    for puntaje in puntaje_materia:
+        if type(puntaje) != dict:
+            return jsonify({'message':'Los puntajes no se reconocen adecuadamente'}), 400
+        if 'materia_id' not in puntaje or 'puntaje' not in puntaje:
+            return jsonify({'message':'Formatea los puntajes adecuadamente'}), 400
+
+    subject_ids = [puntaje['materia_id'] for puntaje in puntaje_materia]
+    subject_ids.sort()
+
+
+    for i in range(len(original_subject_ids)):
+        if subject_ids[i] - original_subject_ids[i] != 0:
+            return jsonify({'message':'Fallo en los id''s de las materias'}), 400
+
+    # Save exam
+    if save_student_scores(evaluacion_id,data):
+        return jsonify({'message':'Evaluación guardada correctamente'})
+    else:
+        return jsonify({'message':'Algo salió mal a la hora de guardar el examen'}), 400
 
 
 if __name__ == '__main__':
