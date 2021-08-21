@@ -20,10 +20,7 @@ documentación de la API
 
 == Endpoints
 
-Para los siguientes endpoints no es necesario estar logeado
-
-`upper-quizz.heroku.com/v1/login` ::
-* *POST*
+`**POST**` `upper-quizz.heroku.com/v1/login` ::
 * _Request body_
 +
 [source,json]
@@ -33,9 +30,20 @@ Para los siguientes endpoints no es necesario estar logeado
   "contrasena" : "diplomado123"
 }
 ----
+* Possible responses:
+** _HTTP code_: `200`
++
+[source,json]
+----
+{
+  "message":"Usuario guardado correctamente"
+}
+----
+** _HTTP code_: `400`
++ 
+Algún dato fue incorrecto.
 
-`upper-quizz.heroku.com/v1/register` ::
-* *POST*
+`*POST*` `upper-quizz.heroku.com/v1/register` ::
 * _Request body_
 +
 [source,json]
@@ -47,18 +55,34 @@ Para los siguientes endpoints no es necesario estar logeado
   "apellidos" : "Francisco Pablo"
 }
 ----
-
-Para los siguientes endpoints _el usuario debe estar logeado_
-
-`upper-quizz.heroku.com/v1/evaluacion` ::
-* *GET*
-* Obtiene todas las evaluaciones del usuario
-* _Response_
+* Possible responses:
+** _HTTP code_: `200`
 +
 [source,json]
 ----
 {
-  "evaluciones": [
+  "message": "El usuario se registro correctamente"
+}
+----
+** _HTTP code_: `400`
++
+Fala algún dato para poder registrar al usuario
+** _HTTP code_: `500`
++
+Error del sistema para guardar al usuario
+
+
+`*GET*` `upper-quizz.heroku.com/v1/evaluacion` ::
+* *Login required*
+* Obtiene todas las evaluaciones del usuario
+* _NO body required_
+* Possible responses:
+** _HTTP code_: `200`
++
+[source,json]
+----
+{
+  "evaluaciones": [
     {
       "examen_ID": 1,
         "nombre_examen": "Examen 1",
@@ -89,11 +113,13 @@ Para los siguientes endpoints _el usuario debe estar logeado_
   ]
 }
 ----
+** *NOTA* En caso de que no haya evaluaciones se regresa una array vacío
 
-`upper-quizz.heroku.com/v1/evaluacion/:id` ::
-* *GET* 
+`*GET*` `upper-quizz.heroku.com/v1/evaluacion/:id` ::
 * Obtiene los datos un examen, para pintar una por una las preguntas
-* _Response_
+* _NO body required_
+* Possible responses:
+** _HTTP code_: `200`
 +
 [source,json]
 ----
@@ -133,12 +159,23 @@ Para los siguientes endpoints _el usuario debe estar logeado_
   ]
 }
 ----
+** _HTTP code_: `400`
++
+[source,json]
+----
+{
+  "message": "No se encontró la evaluación solicitada"
+}
+----
 
 
-`upper-quizz.heroku.com/v1/historial` ::
-* *GET*
+`*GET*` `upper-quizz.heroku.com/v1/historial` ::
+* *Login required*
 * Devuelve los puntajes de todas las evaluaciones terminadas
-* _Response_
+
+* _NO body required_
+* Possible responses:
+** _HTTP code_: `200`
 +
 [source,json]
 ----
@@ -159,27 +196,126 @@ Para los siguientes endpoints _el usuario debe estar logeado_
     ]
 }
 ----
+** *NOTA* En caso de que no haya evaluaciones se regresa una objeto vacío
 
-`upper-quizz.heroku.com/v1/historial/:id` ::
-* *GET*
+`*GET*` `upper-quizz.heroku.com/v1/historial/:id` ::
+* *Login required*
 * Obtiene los puntajes de cada materia 
+* _NO body required_
+* Possible responses:
+** _HTTP code_: `200`
++
+[source,json]
+----
+{
+  "historial": {
+    "aciertos_totales": 70,
+      "evaluacion_id": "1",
+      "num_intento": 4,
+      "puntaje_materia": [
+      {
+        "materia_id": 1,
+        "nombre_materia": "Matemáticas",
+        "puntaje": 6
+      },
+      {
+        "materia_id": 2,
+        "nombre_materia": "Español",
+        "puntaje": 8
+      },
+      {
+        "materia_id": 3,
+        "nombre_materia": "Física",
+        "puntaje": 7
+      },
+      {
+        "materia_id": 4,
+        "nombre_materia": "Química",
+        "puntaje": 8
+      },
+      {
+        "materia_id": 5,
+        "nombre_materia": "Biología",
+        "puntaje": 3
+      },
+      {
+        "materia_id": 6,
+        "nombre_materia": "Historia Universal",
+        "puntaje": 8
+      },
+      {
+        "materia_id": 7,
+        "nombre_materia": "Historia de México",
+        "puntaje": 2
+      },
+      {
+        "materia_id": 8,
+        "nombre_materia": "Literatura",
+        "puntaje": 0
+      },
+      {
+        "materia_id": 9,
+        "nombre_materia": "Geografía",
+        "puntaje": 7
+      },
+      {
+        "materia_id": 10,
+        "nombre_materia": "Filosofía",
+        "puntaje": 9
+      }
+    ]
+  }
+}
+----
+** _HTTP code_: `400`
++
+[source,json]
+----
+{
+  "message":"No existe la evaluación solicitada"
+}
+----
 
-`upper-quizz.heroku.com/v1/evaluacion/:id/pregunta/:pregunta-id` ::
-* *POST*
+`*POST*` `upper-quizz.heroku.com/v1/evaluacion/:id/pregunta/:pregunta-id` ::
+* *Login required*
 * Registra la opción seleccionada en un pregunta dada una evaluación
 * _Request body_
 +
 [source,json]
 ----
 {
-  "evaluacion_id": 1,
   "opcion_seleccionada": 1,
-  "pregunta_id": 1
+}
+----
+* Possible responses:
+** _HTTP code_: `200`
++
+[source,json]
+----
+{
+  "message": "Opción guardada exitosamente"
+}
+----
+** _HTTP code_: `400`
++
+[source,json]
+----
+{
+  "message": "El usuario no mando la opción correcta"
+}
+----
+** _HTTP code_: `500`
++
+[source,json]
+----
+{
+  "message": "El sistema tuvo problemas para guardar la respuesta"
 }
 ----
 
-`upper-quizz.heroku.com/v1/evaluación/:id/calificar` ::
-* *POST*
+
+`*POST*` `upper-quizz.heroku.com/v1/evaluación/:id/calificar` ::
+* *Login required*
 * Registra el puntaje obtenido por cada una de las materias del examen y el
 puntaje general.
 * _Request body_
@@ -200,5 +336,25 @@ puntaje general.
         "puntaje:": 4
       }
     ]
+}
+----
+* Possible responses:
+** _HTTP code_: `200`
++
+[source,json]
+----
+{
+  "message": "Evaluación guardada correctamente"
+}
+----
+** _HTTP code_: `400`
++
+Mensajes de error en caso de que no se proporcionen adeacuadamente los datos
+** _HTTP code_; `500`
++
+[source,json]
+----
+{
+  "message": "El sistema tuvo problemas para guardar las calificaciones"
 }
 ----
