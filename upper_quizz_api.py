@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from flask import Flask, jsonify, request, make_response
 import json
 from flask_cors import CORS
@@ -7,7 +9,7 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 import traceback
 
-from model import *
+from models import *
 
 app = Flask(__name__)
 
@@ -206,7 +208,4 @@ def historial(current_user):
 def historial_by_id(current_user,historial_id):
     history = get_evaluation_history_by_id(current_user['alumno_id'],historial_id)
 
-    if history:
-        return jsonify({'historial':history})
-    else:
-        return jsonify({'historial':{}})
+    return jsonify({'historial':history})

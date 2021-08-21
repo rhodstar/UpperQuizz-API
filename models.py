@@ -102,12 +102,9 @@ def get_evaluation_by_id(evaluation_id):
     questions_formated = []
     question_id_counter = questions[0]['pregunta_id']
     
-    question_ids = [q['pregunta_id'] for q in questions]
-    options_ids = [q['opcion_id'] for q in questions]
-
     # Get max question id and max opcion id
-    question_id_max = max(question_ids)
-    opcion_id_max = max(options_ids)
+    question_id_max = max([q['pregunta_id'] for q in questions])
+    opcion_id_max = max([q['opcion_id'] for q in questions])
 
     options = []
     correct_option_id = -1
@@ -234,16 +231,11 @@ def get_evaluation_history_by_id(student_id,evaluation_id):
     }
 
     entities = [evaluacion_alumno,puntaje_materia,materia]
-
     join_conditions = ["ea.evaluacion_id=pm.evaluacion_id","m.materia_id=pm.materia_id"]
-
     conditions = ["ea.evaluacion_id={}".format(evaluation_id)]
 
     query = db.compound_query_builder(entities,join_conditions,conditions)
-
     res = db.pull(query)
-
-    print(res)
 
     if not res:
         return {}
