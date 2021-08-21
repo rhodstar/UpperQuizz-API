@@ -31,7 +31,6 @@ def get_user_evaluations(user):
         "alias": "e",
         "fields": ["examen_id","nombre"]
     }
-
     status_evaluacion = {
         "table_name": "status_evaluacion", 
         "alias": "se",
@@ -44,10 +43,8 @@ def get_user_evaluations(user):
     }
 
     entities = [examen,status_evaluacion,evaluacion_alumno]
-
     join_conditions = ["e.examen_id=ea.examen_id",
         "ea.status_evaluacion_id=se.status_evaluacion_id"]
-
     conditions = ["ea.alumno_id={}".format(user['alumno_id'])]
 
     query = db.compound_query_builder(entities,join_conditions,conditions)
@@ -74,13 +71,11 @@ def get_evaluation_by_id(evaluation_id):
         "alias": "p",
         "fields": ["pregunta_id","texto_pregunta","materia_id"]
     }
-
     opcion = {
         "table_name":"opcion",
         "alias": "o",
         "fields": ["opcion_id","texto_opcion","es_correcta"]
     }
-
     entities = [pregunta,opcion]
     join_conditions = ["p.pregunta_id=o.pregunta_id"]
     conditions = ["p.examen_id=({})".format(db.simple_query_builder(
