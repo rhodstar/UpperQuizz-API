@@ -29,14 +29,14 @@ def token_auth_required(f):
             token = request.headers['x-access-token']
 
         if not token:
-            return jsonify({'message': 'No sé envío el token del usuario'}), 401
+            return jsonify({'message': 'No sé envío el token del usuario'}), 400
 
         try:
             data = jwt.decode(token,app.config['SECRET_KEY'],algorithms="HS256")
             current_user = get_user_by_id(data['alumno_id'])
         except Exception as e:
             print(e)
-            return jsonify({'message': 'Token inválido'}), 401
+            return jsonify({'message': 'Token inválido'}), 400
 
         return f(current_user,*args,**kwargs)
 
@@ -58,19 +58,19 @@ def login():
 
     if 'correo' not in data or  'contrasena' not in data:
         message = {"message": "Faltan datos para autentificar"}
-        response = make_response(message,404,http_header)
+        response = make_response(message,400,http_header)
         return response
 
     user = get_user_by_email(data['correo'])
 
     if not user:
         message = {"message": "El usuario o la contrasena son incorrectos"}
-        response = make_response(message,404,http_header)
+        response = make_response(message,400,http_header)
         return response
 
     if not check_password_hash(user['contrasena'],data['contrasena']):
         message = {"message": "Contraseña incorrecta"}
-        response = make_response(message,404, http_header)
+        response = make_response(message,400, http_header)
         return response
     else:
         exp_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
@@ -89,7 +89,7 @@ def register():
     if ('nombre' not in data or 'apellidos' not in data or 
     'correo' not in data or 'contrasena' not in data):
         message = {"message":"Falta algun campo"}
-        return make_response(message,404,http_header)
+        return make_response(message,400,http_header)
 
     hashed_password = generate_password_hash(data['contrasena'],method='sha256')
 
@@ -101,7 +101,7 @@ def register():
         return make_response(jsonify(message))
     else:
         message = {'message': 'Algo salio mal a la hora de guardar'}
-        return make_response(jsonify(message))
+        return make_response(jsonify(message),500)
 
 
 @app.route(ENDPOINT_BASE+'/evaluacion',methods=['GET'])
@@ -207,5 +207,8 @@ def historial(current_user):
 @token_auth_required
 def historial_by_id(current_user,historial_id):
     history = get_evaluation_history_by_id(current_user['alumno_id'],historial_id)
-
-    return jsonify({'historial':history})
+    if history:
+        return make_response(jsonify({'historial':history}))
+    else:
+        message = {"message":"No existe la evaluación solicitada"}
+        return make_response(jsonify(message),400)
