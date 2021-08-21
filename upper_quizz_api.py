@@ -185,6 +185,3 @@ def historial_by_id(current_user,historial_id):
         return jsonify({'historial':history})
     else:
         return jsonify({'historial':{}})
-
-if __name__ == '__main__':
-    app.run(debug=True)
