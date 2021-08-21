@@ -104,6 +104,7 @@ def get_evaluation_by_id(evaluacion_id):
     # Get max question id and max opcion id
     question_ids = [q['pregunta_id'] for q in questions]
     options_ids = [q['opcion_id'] for q in questions]
+
     question_id_max = max(question_ids)
     opcion_id_max = max(options_ids)
 
