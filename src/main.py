@@ -112,7 +112,7 @@ def evaluaciones(current_user):
     return json.dumps({'evaluaciones':evaluations})
 
 
-@app.route('/evaluacion/<evaluacion_id>',methods=['GET'])
+@app.route(ENDPOINT_BASE+'/evaluacion/<evaluacion_id>',methods=['GET'])
 def evaluacion(evaluacion_id):
 
     evaluation = get_evaluation_by_id(evaluacion_id)

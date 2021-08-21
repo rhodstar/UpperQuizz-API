@@ -83,3 +83,6 @@ class Connector:
             ",".join(values_formated),",".join(conditions))
 
         return query
+
+    def delete_builder(self,table,conditions):
+        return "delete from {} where {}".format(table," and ".join(conditions))

@@ -154,12 +154,16 @@ def save_student_scores(evaluation_id,scores):
 
     if db.push(query):
         cols = ["evaluacion_id","materia_id","puntaje"]
-        query_scores = db.simple_query_builder(cols,"puntaje_materia")
+        query_scores = db.insertion_builder(cols,"puntaje_materia")
         
-        for subject in subject_scores:
-            params = (evaluation_id,subject["materia_id"],subject["puntaje"])
-            if not db.push(query_scores,params):
-                return False
+        q = db.delete_builder("puntaje_materia",["evaluacion_id={}".format(evaluation_id)])
+        if db.push(q):
+            for subject in subject_scores:
+                params = (evaluation_id,subject["materia_id"],subject["puntaje"])
+                if not db.push(query_scores,params):
+                    return False
+
+        else: return False
 
         return True
     else:
