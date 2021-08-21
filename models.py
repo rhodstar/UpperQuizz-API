@@ -82,9 +82,7 @@ def get_evaluation_by_id(evaluation_id):
     }
 
     entities = [pregunta,opcion]
-
     join_conditions = ["p.pregunta_id=o.pregunta_id"]
-
     conditions = ["p.examen_id=({})".format(db.simple_query_builder(
         ["examen_id"],"evaluacion_alumno",
         ["evaluacion_id={}".format(evaluation_id)]
@@ -93,7 +91,6 @@ def get_evaluation_by_id(evaluation_id):
     other="order by p.pregunta_id"
 
     query = db.compound_query_builder(entities,join_conditions,conditions,other)
-
     questions = db.pull(query)
 
     if not questions:
@@ -141,7 +138,6 @@ def save_student_answer(evaluation_id,question_id,selected_option_id):
     # Using UPSERT
     other = ("on conflict(evaluacion_id,pregunta_id) do update "
     "set opcion_id=EXCLUDED.opcion_id")
-
     query = db.insertion_builder(cols,"respuestas_alumno",other)
 
     return db.push(query,(evaluation_id,question_id,selected_option_id))
@@ -188,15 +184,11 @@ def get_evaluation_history(student_id):
     }
 
     entities = [evaluacion_alumno,examen]
-
     join_conditions = ["e.examen_id=ea.examen_id"]
-
     conditions = ["alumno_id={}".format(student_id),"status_evaluacion_id=2"]
-
     query = db.compound_query_builder(entities,join_conditions,conditions)
 
     res = db.pull(query)
-
     if res:
         res_dict = []
         for r in res:
