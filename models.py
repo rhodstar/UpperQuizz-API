@@ -1,110 +1,111 @@
-import psycopg2
-import os
-from dotenv import load_dotenv
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from Connector import Connector
 
-load_dotenv()
-
-DATABASE = os.getenv('DATABASE')
-DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
-DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
-
-con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
-        password=DATABASE_PASSWORD)
-
-cur = con.cursor()
-
+db = Connector()
 
 def get_user_by_id(id):
-    column_names = ['alumno_id','nombre','apellidos','correo','contrasena']
-    query = 'select {}, {}, {}, {}, {} from alumno where alumno_id = {}'.format(
-            *column_names,id)
-    cur.execute(query)
-    row = cur.fetchone()
+    cols = ['alumno_id','nombre','apellidos','correo','contrasena']
+    query = db.simple_query_builder(cols,"alumno",["alumno_id={}".format(id)])
 
-    if row:
-        res = dict(zip(column_names,row)) 
-        return res
-    else:
-        return None
-
+    return db.pull(query,"fetchone")
 
 def get_user_by_email(email):
-    column_names = ['alumno_id','nombre','apellidos','correo','contrasena']
-    query = "select {}, {}, {}, {}, {} from alumno where correo='{}'".format(
-            *column_names,email)
+    cols = ['alumno_id','nombre','apellidos','correo','contrasena']
 
-    cur.execute(query)
-    row = cur.fetchone()
+    query = db.simple_query_builder(cols,"alumno",["correo='{}'".format(email)])
 
-    if row:
-        res = dict(zip(column_names,row)) 
-        return res
-    else:
-        return None
+    return db.pull(query,"fetchone")
 
 def save_user(user):
-    query = ("insert into alumno(nombre,apellidos,correo,contrasena) "
-        "values(%s, %s, %s, %s)")
-    try:
-        cur.execute(query,(user['nombre'],user['apellidos'],
-            user['correo'],user['contrasena']))
-        con.commit()
-        return True
-    except Exception:
-        return False
+    cols = ["nombre","apellidos","correo","contrasena"]
+    query = db.insertion_builder(cols,"alumno")
 
+    params = tuple([ user[col] for col in cols ])
+
+    return db.push(query,params)
 
 def get_user_evaluations(user):
-    query = ("select e.examen_id,e.nombre, s.nombre, aciertos_totales, num_intento "
-    "from evaluacion_alumno ev,status_evaluacion s, examen e "
-    "where ev.examen_id = e.examen_id "
-    "and ev.status_evaluacion_id = s.status_evaluacion_id "
-    "and alumno_id = "+str(user['alumno_id']))
+    examen = {
+        "table_name": "examen", 
+        "alias": "e",
+        "fields": ["examen_id","nombre"]
+    }
 
-    cur.execute(query)
+    status_evaluacion = {
+        "table_name": "status_evaluacion", 
+        "alias": "se",
+        "fields": ["nombre"]
+    }
+    evaluacion_alumno = {
+        "table_name": "evaluacion_alumno", 
+        "alias": "ea",
+        "fields": ["aciertos_totales","num_intento"]
+    }
 
-    rows = cur.fetchall()
+    entities = [examen,status_evaluacion,evaluacion_alumno]
 
-    keys = ['examen_id',"nombre_examen","status","aciertos_totales","num_intento"] 
+    join_conditions = ["e.examen_id=ea.examen_id",
+        "ea.status_evaluacion_id=se.status_evaluacion_id"]
 
-    evaluations = []
-    
-    #TODO:- Check null case
-    for row in rows:
-        evaluations.append(dict(zip(keys,row)))
+    conditions = ["ea.alumno_id={}".format(user['alumno_id'])]
 
-    return evaluations
+    query = db.compound_query_builder(entities,join_conditions,conditions)
 
-def get_evaluation_by_id(evaluacion_id):
-    keys = ["pregunta_id","texto_pregunta","materia_id","opcion_id",
-            "texto_opcion", "es_correcta"]
-    query = '''
-    select p.pregunta_id,p.texto_pregunta,p.materia_id,
-    o.opcion_id,o.texto_opcion,o.es_correcta
-    from pregunta p, opcion o
-    where p.examen_id = (
-      select examen_id from evaluacion_alumno 
-      where evaluacion_id = {}
-    )
-    and p.pregunta_id = o.pregunta_id
-    order by p.pregunta_id'''. format(evaluacion_id)
+    res = db.pull(query)
 
-    cur.execute(query)
+    if res:
+        res_dict = []
+        for r in res:
+            item_dict = {}
+            item_dict['examen_id'] = r['examen_id']  
+            item_dict['status'] = r['nombre']
+            item_dict['aciertos_totales'] = r['aciertos_totales']
+            item_dict['num_intento'] = r['num_intento']
+            res_dict.append(item_dict)
+        return res_dict
+    else:
+        return []
 
-    rows = cur.fetchall()
 
-    if not rows:
-        return None
-    
-    questions = [dict(zip(keys,row)) for row in rows]
+def get_evaluation_by_id(evaluation_id):
+    pregunta = {
+        "table_name":"pregunta",
+        "alias": "p",
+        "fields": ["pregunta_id","texto_pregunta","materia_id"]
+    }
+
+    opcion = {
+        "table_name":"opcion",
+        "alias": "o",
+        "fields": ["opcion_id","texto_opcion","es_correcta"]
+    }
+
+    entities = [pregunta,opcion]
+
+    join_conditions = ["p.pregunta_id=o.pregunta_id"]
+
+    conditions = ["p.examen_id=({})".format(db.simple_query_builder(
+        ["examen_id"],"evaluacion_alumno",
+        ["evaluacion_id={}".format(evaluation_id)]
+    ))]
+
+    other="order by p.pregunta_id"
+
+    query = db.compound_query_builder(entities,join_conditions,conditions,other)
+
+    questions = db.pull(query)
+
+    if not questions:
+        return []
 
     questions_formated = []
     question_id_counter = questions[0]['pregunta_id']
     
-    # Get max question id and max opcion id
     question_ids = [q['pregunta_id'] for q in questions]
     options_ids = [q['opcion_id'] for q in questions]
 
+    # Get max question id and max opcion id
     question_id_max = max(question_ids)
     opcion_id_max = max(options_ids)
 
@@ -136,79 +137,127 @@ def get_evaluation_by_id(evaluacion_id):
 
     return questions_formated
 
-def save_student_answer(evaluation_id,question_id,selected_option_id):
-    # Using UPSERT
-    query = ("insert into respuestas_alumno(evaluacion_id,pregunta_id,opcion_id) "
-    "values(%s,%s,%s) on conflict(evaluacion_id,pregunta_id) "
-    "do update set opcion_id= EXCLUDED.opcion_id")
 
-    try:
-        cur.execute(query,(evaluation_id,question_id,selected_option_id))
-        con.commit()
-        return True
-    except Exception:
-        return False
+def save_student_answer(evaluation_id,question_id,selected_option_id):
+
+    cols = ["evaluacion_id","pregunta_id","opcion_id"]
+    # Using UPSERT
+    other = ("on conflict(evaluacion_id,pregunta_id) do update "
+    "set opcion_id=EXCLUDED.opcion_id")
+
+    query = db.insertion_builder(cols,"respuestas_alumno",other)
+
+    return db.push(query,(evaluation_id,question_id,selected_option_id))
 
 def save_student_scores(evaluation_id,scores):
     total_score = scores['aciertos_totales']
     aplication_date = scores['fecha_aplicacion']
     subject_scores = scores['puntaje_materia']
 
-    query = ("update evaluacion_alumno set aciertos_totales={},fecha_aplicacion='{}', "
-    "status_evaluacion_id=2, num_intento=num_intento+1 where evaluacion_id={}").format(
-        total_score,aplication_date,evaluation_id)
+    values = {
+        "aciertos_totales": total_score,
+        "fecha_aplicacion": "'{}'".format(aplication_date),
+        "status_evaluacion_id": 2,
+        "num_intento": "num_intento+1"
+    }
 
-    query_scores = ("insert into puntaje_materia(evaluacion_id,materia_id,puntaje) "
-    "values(%s,%s,%s)")
+    query = db.update_builder("evaluacion_alumno",values,
+        ["evaluacion_id={}".format(evaluation_id)])
 
-    try:
-        cur.execute(query)
+    if db.push(query):
+        cols = ["evaluacion_id","materia_id","puntaje"]
+        query_scores = db.simple_query_builder(cols,"puntaje_materia")
+        
         for subject in subject_scores:
-            cur.execute(query_scores,
-                (evaluation_id,subject['materia_id'], subject['puntaje']))
-            con.commit()
-
-        con.commit()
+            params = (evaluation_id,subject["materia_id"],subject["puntaje"])
+            if not db.push(query_scores,params):
+                return False
 
         return True
-    except Exception:
+    else:
         return False
-    
+
 def get_evaluation_history(student_id):
-    keys = ["evaluacion_id","nombre_examen","puntaje_total","fecha_aplicacion"]
-    query = ("select ev.evaluacion_id,e.nombre, ev.aciertos_totales, "
-    "ev.fecha_aplicacion "
-    "from evaluacion_alumno ev,examen e where e.examen_id=ev.examen_id "
-    "and alumno_id={} and status_evaluacion_id=2").format(student_id)
+    evaluacion_alumno = {
+        "table_name":"evaluacion_alumno",
+        "alias": "ea",
+        "fields": ["evaluacion_id","aciertos_totales","fecha_aplicacion"]
+    }
 
-    cur.execute(query)
+    examen = {
+        "table_name":"examen",
+        "alias": "e",
+        "fields": ["nombre"]
+    }
 
-    rows = cur.fetchall()
+    entities = [evaluacion_alumno,examen]
 
-    if not rows:
-        return None
-    
-    history = [dict(zip(keys,row)) for row in rows]
+    join_conditions = ["e.examen_id=ea.examen_id"]
 
-    return history
+    conditions = ["alumno_id={}".format(student_id),"status_evaluacion_id=2"]
+
+    query = db.compound_query_builder(entities,join_conditions,conditions)
+
+    res = db.pull(query)
+
+    if res:
+        res_dict = []
+        for r in res:
+            item_dict = {}
+            item_dict['evaluacion_id'] = r['evaluacion_id']  
+            item_dict['nombre_examen'] = r['nombre']
+            item_dict['aciertos_totales'] = r['aciertos_totales']
+            item_dict['fecha_aplicacion'] = r['fecha_aplicacion']
+            res_dict.append(item_dict)
+        return res_dict
+    else:
+        return []
+
 
 def get_evaluation_history_by_id(student_id,evaluation_id):
-    keys = ["aciertos_totales","fecha_aplicacion",
-        "num_intento","materia_id","nombre_materia","puntaje"]
 
-    query = ("select ev.aciertos_totales,ev.fecha_aplicacion, "
-    "ev.num_intento, pm.materia_id,m.nombre,pm.puntaje "
-    "from evaluacion_alumno ev, puntaje_materia pm, materia m "
-    "where ev.evaluacion_id=pm.evaluacion_id and m.materia_id=pm.materia_id "
-    "and ev.evaluacion_id={}").format(evaluation_id)
+    evaluacion_alumno = {
+        "table_name": "evaluacion_alumno",
+        "alias": "ea",
+        "fields": ["aciertos_totales","fecha_aplicacion","num_intento"]
+    }
 
-    cur.execute(query)
-    rows = cur.fetchall()
+    puntaje_materia = {
+        "table_name": "puntaje_materia",
+        "alias": "pm",
+        "fields": ["materia_id","puntaje"]
+    }
+    materia = {
+        "table_name": "materia",
+        "alias": "m",
+        "fields": ["nombre"]
+    }
 
-    if not rows:
-        return None
-    
-    history = [dict(zip(keys,row)) for row in rows]
+    entities = [evaluacion_alumno,puntaje_materia,materia]
+
+    join_conditions = ["ea.evaluacion_id=pm.evaluacion_id","m.materia_id=pm.materia_id"]
+
+    conditions = ["ea.evaluacion_id={}".format(evaluation_id)]
+
+    query = db.compound_query_builder(entities,join_conditions,conditions)
+
+    res = db.pull(query)
+
+    print(res)
+
+    if not res:
+        return {}
+
+    history = []
+    for r in res:
+        item_dict = {}
+        item_dict['aciertos_totales'] = r['aciertos_totales']  
+        item_dict['fecha_aplicacion'] = r['fecha_aplicacion']
+        item_dict['num_intento'] = r['num_intento']
+        item_dict['materia_id'] = r['materia_id']
+        item_dict['puntaje'] = r['puntaje']
+        item_dict['nombre_materia'] = r['nombre']
+        history.append(item_dict)
 
     aciertos_totales = history[0]['aciertos_totales']
     fecha_aplicacion = history[0]['fecha_aplicacion']
@@ -228,5 +277,3 @@ def get_evaluation_history_by_id(student_id,evaluation_id):
     }
 
     return history_formated
-
-

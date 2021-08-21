@@ -5,9 +5,9 @@ import jwt
 import datetime
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-
-from models import *
 import traceback
+
+from model import *
 
 app = Flask(__name__)
 
@@ -16,8 +16,7 @@ app.config['DEBUG'] = True
 
 CORS(app)
 
-ENDPOINT_BASE = '/v1/'
-
+ENDPOINT_BASE = '/v1'
 
 def token_auth_required(f):
     @wraps(f)
@@ -28,77 +27,88 @@ def token_auth_required(f):
             token = request.headers['x-access-token']
 
         if not token:
-            return jsonify({'message': 'Token is missing'}), 401
+            return jsonify({'message': 'No sé envío el token del usuario'}), 401
 
         try:
             data = jwt.decode(token,app.config['SECRET_KEY'],algorithms="HS256")
             current_user = get_user_by_id(data['alumno_id'])
-        except:
-            traceback.print_exc()
-            return jsonify({'message': 'Token is missing, carefull'}), 401
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'Token inválido'}), 401
 
         return f(current_user,*args,**kwargs)
 
     return decorated
 
+@app.after_request
+def apply_caching(response):
+    response.headers["Content-Type"] = "application/json"
+    return response
+
 ##############################################################################
 ##########                      Endpoints                           ##########
 ##############################################################################
 
-@app.route('/login',methods=['POST'])
+@app.route(ENDPOINT_BASE+'/login',methods=['POST'])
 def login():
     data = request.get_json()
+    http_header = {'WWW-Authenticate': 'Basic realm="Login required"'}
 
     if 'correo' not in data or  'contrasena' not in data:
-        return make_response('No se pudo verificar',404,
-                {'WWW-Authenticate': 'Basic realm="Login required"'})
+        message = {"message": "Faltan datos para autentificar"}
+        response = make_response(message,404,http_header)
+        return response
 
     user = get_user_by_email(data['correo'])
 
     if not user:
-        return make_response('No se pudo verificar',404,
-                {'WWW-Authenticate': 'Basic realm="Login required"'})
+        message = {"message": "El usuario o la contrasena son incorrectos"}
+        response = make_response(message,404,http_header)
+        return response
 
-    if check_password_hash(user['contrasena'],data['contrasena']):
-        token = jwt.encode({'alumno_id':user['alumno_id'], 
-            'exp':datetime.datetime.utcnow() + datetime.timedelta(minutes=60)},
-            app.config['SECRET_KEY'],algorithm="HS256")
-        return jsonify({'token': token})
+    if not check_password_hash(user['contrasena'],data['contrasena']):
+        message = {"message": "Contraseña incorrecta"}
+        response = make_response(message,404, http_header)
+        return response
+    else:
+        exp_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
+        encode_data = {'alumno_id':user['alumno_id'], 'exp':exp_time}
+        token = jwt.encode(encode_data, app.config['SECRET_KEY'],algorithm="HS256")
 
-    return make_response('No se pudo verificar',404,
-            {'WWW-Authenticate': 'Basic realm="Login required"'})
+        return make_response(jsonify({'token': token}))
 
 
-@app.route('/register',methods=['POST'])
+@app.route(ENDPOINT_BASE+'/register',methods=['POST'])
 def register():
 
-    print(request)
     data = request.get_json()
+    http_header = {'WWW-Authenticate': 'Basic realm="Fallo el registro"'}
 
-    if ('nombre' not in data or 'apellidos' not in data or 'correo' not in 
-            data or 'contrasena' not in data):
-        return make_response('Falta algun campo',404,
-                {'WWW-Authenticate': 'Basic realm="Fallo el registro"'})
+    if ('nombre' not in data or 'apellidos' not in data or 
+    'correo' not in data or 'contrasena' not in data):
+        message = {"message":"Falta algun campo"}
+        return make_response(message,404,http_header)
 
     hashed_password = generate_password_hash(data['contrasena'],method='sha256')
 
     user = data
     user['contrasena'] = hashed_password
 
-    # Perform insert
     if save_user(user) :
-        return jsonify({'message': 'Usuario insertado correctamente'}), 200
+        message = {"message": "Usuario insertado correctamente"}
+        return make_response(jsonify(message))
     else:
-        return jsonify({'message': 'Algo salio mal'}), 403
+        message = {'message': 'Algo salio mal a la hora de guardar'}
+        return make_response(jsonify(message))
 
 
-@app.route('/evaluacion',methods=['GET'])
+@app.route(ENDPOINT_BASE+'/evaluacion',methods=['GET'])
 @token_auth_required
 def evaluaciones(current_user):
 
     evaluations = get_user_evaluations(current_user)
-
     return json.dumps({'evaluaciones':evaluations})
+
 
 @app.route('/evaluacion/<evaluacion_id>',methods=['GET'])
 def evaluacion(evaluacion_id):
@@ -106,77 +116,92 @@ def evaluacion(evaluacion_id):
     evaluation = get_evaluation_by_id(evaluacion_id)
 
     if evaluation:
-        return jsonify({'evaluacion':evaluation})
+        return make_response(jsonify({'evaluacion':evaluation}))
     else:
-        return jsonify({'message':'No se encontró la evaluación solicitada'}), 400
+        message = {'message':'No se encontró la evaluación solicitada'}
+        return make_response(jsonify(message), 400)
 
 
-@app.route('/evaluacion/<evaluacion_id>/pregunta/<pregunta_id>',methods=['POST'])
+@app.route(ENDPOINT_BASE+'/evaluacion/<evaluacion_id>/pregunta/<pregunta_id>',methods=['POST'])
 @token_auth_required
 def guardar_evaluacion_pregunta(current_user,evaluacion_id,pregunta_id):
 
     data = request.get_json()
 
     if 'opcion_seleccionada_id' not in data:
-        return jsonify({'message':'No se mandó la opcion seleccionada'}), 400
+        message = {'message':'No se mandó la opcion seleccionada'}
+        return make_response(jsonify(message), 400)
 
+    #TODO:- Future version should make sure that the selected option is valid
     opcion_seleccionada_id = data['opcion_seleccionada_id']
 
     if save_student_answer(evaluacion_id,pregunta_id,opcion_seleccionada_id):
-        return jsonify({'message':'Respuesta guardada exitosamente'})
+        message = {'message':'Respuesta guardada exitosamente'}
+        return make_response(jsonify(message))
     else:
-        return jsonify({'message':'Error al guardar la respuesta'}), 400
+        message = {'message':'Error al guardar la respuesta'}
+        return make_response(jsonify(message), 500)
 
 
-@app.route('/evaluacion/<evaluacion_id>/calificar',methods=['POST'])
+@app.route(ENDPOINT_BASE+'/evaluacion/<evaluacion_id>/calificar',methods=['POST'])
 @token_auth_required
 def guardar_calificacion_evaluacion(current_user,evaluacion_id):
 
     data = request.get_json()
+    # Check if request has the minimum attributes
     if ('aciertos_totales' not in data or 'fecha_aplicacion' not in data
     or 'puntaje_materia' not in data):
-        return jsonify({'message':'Faltan campos en el cuerpo de la evaluacion'}), 400
+        message = {'message':'Faltan campos en el cuerpo del request'}
+        return make_response(jsonify(message), 400)
 
     if type(data['puntaje_materia']) != list:
-        return jsonify({'message':'Los puntajes no tienen el formato adecuado'}), 400
+        message = {'message':'Los puntajes no tienen el formato adecuado'}
+        return make_response(jsonify(message), 400)
 
     puntaje_materia = data['puntaje_materia']
 
     original_subject_ids = [1,2,3,4,5,6,7,8,9,10] # Most be ordered
     if len(puntaje_materia) != len(original_subject_ids):
-        return jsonify({'message':'Faltan los puntajes de algunas materias'}), 400
+        message = {'message':'Faltan los puntajes de algunas materias'}
+        return make_response(jsonify(message), 400)
 
+    # Checking if "puntaje_materia" has the appropiate format
     for puntaje in puntaje_materia:
         if type(puntaje) != dict:
-            return jsonify({'message':'Los puntajes no se reconocen adecuadamente'}), 400
+            message = {'message':'Los puntajes no se reconocen adecuadamente'}
+            return make_response(jsonify(message), 400)
+
         if 'materia_id' not in puntaje or 'puntaje' not in puntaje:
-            return jsonify({'message':'Formatea los puntajes adecuadamente'}), 400
+            message = {'message':'Faltan atributos: materia_id o puntaje'}
+            return make_response(jsonify(message), 400)
 
     subject_ids = [puntaje['materia_id'] for puntaje in puntaje_materia]
     subject_ids.sort()
 
-
+    # Checking for any missing materia_id 
     for i in range(len(original_subject_ids)):
         if subject_ids[i] - original_subject_ids[i] != 0:
-            return jsonify({'message':'Fallo en los id''s de las materias'}), 400
+            message = {'message':'Fallo en los id''s de las materias'}
+            return make_response(jsonify(message), 400)
 
-    # Save exam
+    # Save student answers data
     if save_student_scores(evaluacion_id,data):
-        return jsonify({'message':'Evaluación guardada correctamente'})
+        message = {'message':'Evaluación guardada correctamente'}
+        return make_response(jsonify(message))
     else:
-        return jsonify({'message':'Algo salió mal a la hora de guardar el examen'}), 400
+        message = {'message':'Algo salió mal a la hora de guardar el examen'}
+        return make_response(jsonify(message), 500)
 
-@app.route('/historial',methods=['GET'])
+
+@app.route(ENDPOINT_BASE+'/historial',methods=['GET'])
 @token_auth_required
 def historial(current_user):
     history = get_evaluation_history(current_user['alumno_id'])
+    message = {'historial':history}
+    return make_response(jsonify(message))
 
-    if history:
-        return jsonify({'historial':history})
-    else:
-        return jsonify({'historial':{}})
 
-@app.route('/historial/<historial_id>',methods=['GET'])
+@app.route(ENDPOINT_BASE+'/historial/<historial_id>',methods=['GET'])
 @token_auth_required
 def historial_by_id(current_user,historial_id):
     history = get_evaluation_history_by_id(current_user['alumno_id'],historial_id)
