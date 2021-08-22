@@ -14,7 +14,6 @@ from models import *
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'regteamdevelopment'
-app.config['DEBUG'] = True
 
 CORS(app)
 
