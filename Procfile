@@ -1,1 +1,1 @@
-web: gunicorn upper-quizz:main
+web: gunicorn app:main
