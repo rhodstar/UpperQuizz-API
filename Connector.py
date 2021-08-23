@@ -14,8 +14,9 @@ DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
 class Connector:
 
     def __init__(self):
-        self.con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
-            password=DATABASE_PASSWORD)
+        # self.con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
+            # password=DATABASE_PASSWORD)
+        self.con = psycopg2.connect(" postgres://qmakovthrfqvki:088d139a6e7caaf1f7e73bd2c61c23c9ae59efe446a8ed8ad408383e09c14a57@ec2-35-153-114-74.compute-1.amazonaws.com:5432/d2lnhrs0vfcn2s")
 
     def pull(self,query,fetch_type="fetchall"):
         with self.con:
