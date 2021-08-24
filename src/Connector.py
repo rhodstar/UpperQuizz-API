@@ -4,9 +4,8 @@ import psycopg2
 import psycopg2.extras
 import os
 
-from dotenv import load_dotenv
-
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 # DATABASE = os.getenv('DATABASE')
 # DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
 # DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
