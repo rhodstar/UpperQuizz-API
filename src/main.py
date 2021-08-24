@@ -95,7 +95,13 @@ def register():
     user = data
     user['contrasena'] = hashed_password
 
-    if save_user(user) :
+    if save_user(user):
+
+        # Assigning evaluations
+        if not assign_exams_to_user(user['contrasena']):
+            message = {'message': 'Se creo el usuario sin evaluaciones.'}
+            return make_response(jsonify(message),500)
+
         message = {"message": "Usuario insertado correctamente"}
         return make_response(jsonify(message))
     else:

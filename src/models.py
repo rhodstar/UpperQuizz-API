@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from src.Connector import Connector
+import random
 
 db = Connector()
 
@@ -24,6 +25,33 @@ def save_user(user):
     params = tuple([ user[col] for col in cols ])
 
     return db.push(query,params)
+
+def assign_exams_to_user(email):
+
+    res_max = db.pull("select max(examen_id) from examen","fetchone")
+    max_examen_id = res_max["max"]
+
+    conditions = ["correo='{}'".format(email)]
+    query = db.simple_query_builder(["alumno_id"],"alumno",conditions)
+    res_alu = db.pull(query,"fetchone")
+    alumno_id = res_alu["alumno_id"]
+
+    cols = ["num_intento","status_evaluacion_id","alumno_id","examen_id"]
+    query_insertion = db.insertion_builder(cols,"evaluacion_alumno")
+
+    exam_ids = [ i for i in range(1,max_examen_id+1)]
+    real_exam_ids = []
+
+    for _ in range(3):
+        item = random.choice(exam_ids)
+        real_exam_ids.append(item)
+        exam_ids.remove(item)
+
+
+    for i in real_exam_ids:
+        if not db.push(query_insertion,(0,3,alumno_id,i)):
+            return False
+    return True
 
 def get_user_evaluations(user):
     examen = {
