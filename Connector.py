@@ -3,12 +3,13 @@
 import psycopg2
 import psycopg2.extras
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
-DATABASE = os.getenv('DATABASE')
-DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
-DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
+# load_dotenv()
+# DATABASE = os.getenv('DATABASE')
+# DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
+# DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 
 class Connector:
@@ -16,7 +17,7 @@ class Connector:
     def __init__(self):
         # self.con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
             # password=DATABASE_PASSWORD)
-        self.con = psycopg2.connect(" postgres://qmakovthrfqvki:088d139a6e7caaf1f7e73bd2c61c23c9ae59efe446a8ed8ad408383e09c14a57@ec2-35-153-114-74.compute-1.amazonaws.com:5432/d2lnhrs0vfcn2s")
+        self.con = psycopg2.connect(DATABASE_URL)
 
     def pull(self,query,fetch_type="fetchall"):
         with self.con:
