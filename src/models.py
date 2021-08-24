@@ -83,9 +83,9 @@ def get_user_evaluations(user):
         res_dict = []
         for r in res:
             item_dict = {}
-            print(r['aciertos_totales'])
             aciertos_totales = 0
-            if r['aciertos_totales'] not None: aciertos_totales = r['aciertos_totales']
+            if r['aciertos_totales'] not None: 
+                aciertos_totales = r['aciertos_totales']
             item_dict['evaluacion_id'] = r['evaluacion_id']  
             item_dict['examen_id'] = r['examen_id']  
             item_dict['status'] = r['nombre']
