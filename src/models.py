@@ -67,7 +67,7 @@ def get_user_evaluations(user):
     evaluacion_alumno = {
         "table_name": "evaluacion_alumno", 
         "alias": "ea",
-        "fields": ["aciertos_totales","num_intento"]
+        "fields": ["evaluacion_id","aciertos_totales","num_intento"]
     }
 
     entities = [examen,status_evaluacion,evaluacion_alumno]
@@ -83,9 +83,12 @@ def get_user_evaluations(user):
         res_dict = []
         for r in res:
             item_dict = {}
+            print(r['aciertos_totales'])
+            aciertos_totales = r['aciertos_totales'] == "null" ? 0 : r['aciertos_totales']
+            item_dict['evaluacion_id'] = r['evaluacion_id']  
             item_dict['examen_id'] = r['examen_id']  
             item_dict['status'] = r['nombre']
-            item_dict['aciertos_totales'] = r['aciertos_totales']
+            item_dict['aciertos_totales'] = aciertos_totales
             item_dict['num_intento'] = r['num_intento']
             res_dict.append(item_dict)
         return res_dict
