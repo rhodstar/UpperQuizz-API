@@ -9,7 +9,7 @@ from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 import traceback
 
-from models import *
+from src.models import *
 
 app = Flask(__name__)
 

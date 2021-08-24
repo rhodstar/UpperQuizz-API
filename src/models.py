@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from Connector import Connector
+from src.Connector import Connector
 
 db = Connector()
 
