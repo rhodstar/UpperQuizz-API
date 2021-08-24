@@ -1,17 +1,18 @@
 import psycopg2
 import os
-from dotenv import load_dotenv
 from faker import Faker
 from random import randint
 
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
+# DATABASE = os.getenv('DATABASE')
+# DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
+# DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-DATABASE = os.getenv('DATABASE')
-DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
-DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
-
-con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
-        password=DATABASE_PASSWORD)
+# con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
+        # password=DATABASE_PASSWORD)
+con = psycopg2.connect(DATABASE_URL)
 
 cur = con.cursor()
 
