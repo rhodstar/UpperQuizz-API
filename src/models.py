@@ -47,7 +47,6 @@ def assign_exams_to_user(email):
         real_exam_ids.append(item)
         exam_ids.remove(item)
 
-
     for i in real_exam_ids:
         if not db.push(query_insertion,(0,3,alumno_id,i)):
             return False
