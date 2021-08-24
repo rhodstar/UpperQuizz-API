@@ -211,3 +211,7 @@ def historial_by_id(current_user,historial_id):
     else:
         message = {"message":"No existe la evaluación solicitada"}
         return make_response(jsonify(message),400)
+
+
+if __name__ == "__main__":
+    app.run()
