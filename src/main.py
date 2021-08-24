@@ -218,6 +218,9 @@ def historial_by_id(current_user,historial_id):
         message = {"message":"No existe la evaluación solicitada"}
         return make_response(jsonify(message),400)
 
+@app.errorhandler(404)
+def resource_not_found(e):
+    return jsonify(error=str(e)), 404
 
 if __name__ == "__main__":
     app.run()
