@@ -11,9 +11,9 @@ python-dotenv = "*"
 werkzeug = "*"
 pyjwt = "*"
 gunicorn = "*"
+faker = "*"
 
 [dev-packages]
-faker = "*"
 
 [requires]
 python_version = "3.9"
