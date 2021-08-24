@@ -98,7 +98,7 @@ def register():
     if save_user(user):
 
         # Assigning evaluations
-        if not assign_exams_to_user(user['contrasena']):
+        if not assign_exams_to_user(user['correo']):
             message = {'message': 'Se creo el usuario sin evaluaciones.'}
             return make_response(jsonify(message),500)
 
