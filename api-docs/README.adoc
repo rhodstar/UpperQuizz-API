@@ -224,23 +224,24 @@ Error del sistema para guardar al usuario
 * _NO body required_
 * Possible responses:
 ** _HTTP code_: `200`
+*** The responses has the following attributes
+. historial *[Array]*, cada elemento contiene:
+.. aciertos_totales *[Int]*
+.. evaluacion_id *[Int]*
+.. fecha_aplicacion *[Date]*
+.. nombre_examen *[String]*
+***  Example
 +
 [source,json]
 ----
 {
-  "promedio_general": 10.4,
-    "historial_evaluaciones": [
-      {
-        "nombre_examen": "Evaluacion 1",
-        "puntaje_total": 20,
-        "evaluacion_id": 1
-
-      },
-      {
-        "nombre_examen": "Evaluacion 1",
-        "puntaje_total": 20,
-        "evaluacion_id": 2
-      }
+    "historial": [
+        {
+            "aciertos_totales": 60,
+            "evaluacion_id": 5,
+            "fecha_aplicacion": "Thu, 06 May 2021 15:03:03 GMT",
+            "nombre_examen": "Simulación UNAM 2012"
+        }
     ]
 }
 ----
@@ -252,67 +253,77 @@ Error del sistema para guardar al usuario
 * _NO body required_
 * Possible responses:
 ** _HTTP code_: `200`
+*** The responses has the following attributes
+. historial *[Obj]*
+.. aciertos_totales *[Int]*
+.. evaluacion_id *[Int]*
+.. num_intento *[Int]*
+.. puntaje_materia *[Array]*, cada elemento es un objeto que contiene
+... materia_id *[Int]*
+... nombre_materia *[String]*
+... puntaje *[Int]*
+***  Example
 +
 [source,json]
 ----
 {
-  "historial": {
-    "aciertos_totales": 70,
-      "evaluacion_id": "1",
-      "num_intento": 4,
-      "puntaje_materia": [
-      {
-        "materia_id": 1,
-        "nombre_materia": "Matemáticas",
-        "puntaje": 6
-      },
-      {
-        "materia_id": 2,
-        "nombre_materia": "Español",
-        "puntaje": 8
-      },
-      {
-        "materia_id": 3,
-        "nombre_materia": "Física",
-        "puntaje": 7
-      },
-      {
-        "materia_id": 4,
-        "nombre_materia": "Química",
-        "puntaje": 8
-      },
-      {
-        "materia_id": 5,
-        "nombre_materia": "Biología",
-        "puntaje": 3
-      },
-      {
-        "materia_id": 6,
-        "nombre_materia": "Historia Universal",
-        "puntaje": 8
-      },
-      {
-        "materia_id": 7,
-        "nombre_materia": "Historia de México",
-        "puntaje": 2
-      },
-      {
-        "materia_id": 8,
-        "nombre_materia": "Literatura",
-        "puntaje": 0
-      },
-      {
-        "materia_id": 9,
-        "nombre_materia": "Geografía",
-        "puntaje": 7
-      },
-      {
-        "materia_id": 10,
-        "nombre_materia": "Filosofía",
-        "puntaje": 9
-      }
-    ]
-  }
+    "historial": {
+        "aciertos_totales": 60,
+        "evaluacion_id": "5",
+        "num_intento": 1,
+        "puntaje_materia": [
+            {
+                "materia_id": 1,
+                "nombre_materia": "Matemáticas",
+                "puntaje": 10
+            },
+            {
+                "materia_id": 2,
+                "nombre_materia": "Español",
+                "puntaje": 8
+            },
+            {
+                "materia_id": 3,
+                "nombre_materia": "Física",
+                "puntaje": 5
+            },
+            {
+                "materia_id": 4,
+                "nombre_materia": "Química",
+                "puntaje": 3
+            },
+            {
+                "materia_id": 5,
+                "nombre_materia": "Biología",
+                "puntaje": 1
+            },
+            {
+                "materia_id": 6,
+                "nombre_materia": "Historia Universal",
+                "puntaje": 6
+            },
+            {
+                "materia_id": 7,
+                "nombre_materia": "Historia de México",
+                "puntaje": 0
+            },
+            {
+                "materia_id": 8,
+                "nombre_materia": "Literatura",
+                "puntaje": 4
+            },
+            {
+                "materia_id": 9,
+                "nombre_materia": "Geografía",
+                "puntaje": 1
+            },
+            {
+                "materia_id": 10,
+                "nombre_materia": "Filosofía",
+                "puntaje": 8
+            }
+        ]
+    }
 }
 ----
 ** _HTTP code_: `400`
@@ -369,7 +380,7 @@ Error del sistema para guardar al usuario
 ----
 
 
-`*POST*` `upper-quizz.heroku.com/v1/evaluación/:id/calificar` ::
+`*POST*` `upper-quizz.heroku.com/v1/evaluacion/:id/calificar` ::
 * *Login required*
 * Registra el puntaje obtenido por cada una de las materias del examen y el
 puntaje general.
@@ -397,18 +408,49 @@ _Puntaje materia_ attributes:
 [source,json]
 ----
 {
-  "evaluacion_id": 1,
-    "aciertos_totales": 2,
-    "fecha_aplicacion": "Date",
+    "aciertos_totales": 60,
+    "fecha_aplicacion": "2021-05-06 15:03:03",
     "puntaje_materia": [
-      {
-        "materia_id": 1,
-        "puntaje:": 3
-      },
-      {
-        "materia_id": 2,
-        "puntaje:": 4
-      }
+        {
+            "materia_id": 1,
+            "puntaje": 10
+        },
+                {
+            "materia_id": 2,
+            "puntaje": 8
+        },
+                {
+            "materia_id": 3,
+            "puntaje": 5
+        },
+                {
+            "materia_id": 4,
+            "puntaje": 3
+        },
+                {
+            "materia_id": 5,
+            "puntaje": 1
+        },
+                {
+            "materia_id": 6,
+            "puntaje": 6
+        },
+                {
+            "materia_id": 7,
+            "puntaje": 0
+        },
+                {
+            "materia_id": 8,
+            "puntaje": 4
+        },
+                {
+            "materia_id": 9,
+            "puntaje": 1
+        },
+                {
+            "materia_id": 10,
+            "puntaje": 8
+        }
     ]
 }
 ----
