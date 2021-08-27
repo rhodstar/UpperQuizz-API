@@ -23,6 +23,14 @@ documentación de la API
 `**POST**` `upper-quizz.heroku.com/v1/login` ::
 * _Request body_
 +
+|===
+|Attribute | Type | Is required? 
+
+|correo | String | required
+|contrasena | String | required
+|===
+** Example
++
 [source,json]
 ----
 {
@@ -45,6 +53,16 @@ Algún dato fue incorrecto.
 
 `*POST*` `upper-quizz.heroku.com/v1/register` ::
 * _Request body_
++
+|===
+|Attribute | Type | Is required? 
+
+|correo | String | required
+|contrasena | String | required
+|nombre | String | required
+|apellidos | String | required
+|===
+** Example
 +
 [source,json]
 ----
@@ -78,37 +96,39 @@ Error del sistema para guardar al usuario
 * _NO body required_
 * Possible responses:
 ** _HTTP code_: `200`
+*** The responses has the following attributes
+. evaluaciones *[array]*, cada elemento contiene:
+.. evaluacion_id *[Int]*
+.. examen_id *[Int]*
+.. status *[String]*
+.. aciertos_totales *[Int]*
+.. num_intento *[Int]*
+***  Example
 +
 [source,json]
 ----
 {
   "evaluaciones": [
     {
-      "examen_ID": 1,
-        "nombre_examen": "Examen 1",
-        "status": "I",
-        "aciertos": 9,
-        "num_preguntas_contestadas": 10,
-        "total_preguntas": 20,
-        "intentos": 0
+      "evaluacion_id": 5,
+      "examen_id": 1,
+      "status": "NUNCA",
+      "aciertos_totales": 0,
+      "num_intento": 0
     },
     {
-      "examen_ID": 2,
-      "nombre_examen": "Examen 2",
-      "status": "T",
-      "aciertos": 9,
-      "num_preguntas_contestadas": 10,
-      "total_preguntas": 20,
-      "intentos": 0
+      "evaluacion_id": 6,
+      "examen_id": 5,
+      "status": "NUNCA",
+      "aciertos_totales": 0,
+      "num_intento": 0
     },
     {
-      "examen_ID": 3,
-      "nombre_examen": "Examen 2",
-      "status": "N",
-      "aciertos": 9,
-      "num_preguntas_contestadas": 10,
-      "total_preguntas": 20,
-      "intentos": 0
+      "evaluacion_id": 4,
+      "examen_id": 7,
+      "status": "NUNCA",
+      "aciertos_totales": 0,
+      "num_intento": 0
     }
   ]
 }
@@ -120,42 +140,70 @@ Error del sistema para guardar al usuario
 * _NO body required_
 * Possible responses:
 ** _HTTP code_: `200`
+*** The responses has the following attributes
+. evaluacion_id *[Int]*
+. preguntas *[Array]*, cada elemento contiene:
+.. texto_pregunta *[String]*
+.. opcion_correcta_id *[Int]*
+.. materia_id *[Int]*
+.. pregunta_id *[Int]*
+.. opciones *[Array]*, cada elemento contiene:
+... opcion_id *[Int]*
+... texto_opcion *[String]*
+***  Example
 +
 [source,json]
 ----
 {
-  "evaluacion_id": 1,
-    "preguntas": [
-      {
-        "texto_pregunta": "¿Quién mato a Colosio?",
-        "opciones": [
-          {
-            "opcion_id": 1,
-            "contenido_opcion": "Salinas"
-          },
-          {
-            "opcion_id": 2,
-            "contenido_opcion": "ONU"
-          }
-        ],
+  "evaluacion": [
+    {
+      "materia_id": 1,
         "opcion_correcta_id": 1,
-        "materia_id": 1
-      },
-      {
-        "texto_pregunta": "¿En que año cayo Roma?",
         "opciones": [
           {
             "opcion_id": 1,
-            "contenido_opcion": "Salinas"
+            "texto_opcion": "Especially value use."
           },
           {
             "opcion_id": 2,
-            "contenido_opcion": "ONU"
+            "texto_opcion": "Very garden memory rise."
+          },
+          {
+            "opcion_id": 3,
+            "texto_opcion": "Special they almost down quickly article."
+          },
+          {
+            "opcion_id": 4,
+            "texto_opcion": "Environmental various still success training."
           }
         ],
-        "opcion_correcta_id": 2,
-        "materia_id": 2
-      }
+        "pregunta_id": 1,
+        "texto_pregunta": "Card station seem relate sister fall."
+    },
+    {
+      "materia_id": 1,
+      "opcion_correcta_id": 8,
+      "opciones": [
+        {
+          "opcion_id": 5,
+          "texto_opcion": "Middle job skill success no establish."
+        },
+        {
+          "opcion_id": 6,
+          "texto_opcion": "Artist ball by decide activity above."
+        },
+        {
+          "opcion_id": 7,
+          "texto_opcion": "Indeed population everything couple whatever research."
+        },
+        {
+          "opcion_id": 8,
+          "texto_opcion": "Hotel star current democratic."
+        }
+      ],
+      "pregunta_id": 2,
+      "texto_pregunta": "Out audience the away law. Crime may boy agree."
+    }
   ]
 }
 ----
@@ -281,6 +329,13 @@ Error del sistema para guardar al usuario
 * Registra la opción seleccionada en un pregunta dada una evaluación
 * _Request body_
 +
+|===
+|Attribute | Type | Is required? 
+
+|opcion_seleccionada | Int | required
+|===
+** Example
++
 [source,json]
 ----
 {
@@ -319,6 +374,25 @@ Error del sistema para guardar al usuario
 * Registra el puntaje obtenido por cada una de las materias del examen y el
 puntaje general.
 * _Request body_
++
+|===
+|Attribute | Type | Is required? 
+
+|evaluacion_id | Int | required
+|fecha_aplicacion | String | required
+|puntaje_materia | Array | required
+|===
++
+_Puntaje materia_ attributes:
++
+|===
+|Attribute | Type | Is required? 
+
+|materia_id | Int | required
+|puntaje | Int | required
+|===
++
+** Example
 +
 [source,json]
 ----
