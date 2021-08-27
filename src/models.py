@@ -284,7 +284,7 @@ def get_evaluation_history_by_id(student_id,evaluation_id):
     } for row in history]
 
     history_formated = {
-        "evaluacion_id": evaluation_id,
+        "evaluacion_id": int(evaluation_id),
         "aciertos_totales":aciertos_totales,
         "num_intento":num_intento,
         "puntaje_materia":puntaje_materia
