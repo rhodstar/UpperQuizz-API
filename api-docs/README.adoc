@@ -97,41 +97,49 @@ Error del sistema para guardar al usuario
 * Possible responses:
 ** _HTTP code_: `200`
 *** The responses has the following attributes
-. evaluaciones *[array]*, cada elemento contiene:
+. *[array]*, cada elemento contiene:
 .. evaluacion_id *[Int]*
 .. examen_id *[Int]*
-.. status *[String]*
+.. status *[String]*, pueden tener solo los siguientes valores:
++
+|===
+|Nombre _status_ | Type 
+
+|INCONCLUSO | Este estado se da cuando un alumno inició un examen, pero aún no
+lo termina de contestar.
+|TERMINADO | Este estado se da cuando un alumno termina de contestar el examen y
+recibe su puntaje
+|NUNCA | Este estado se da cuendo nunca se ha abierto la evaluación
+|===
 .. aciertos_totales *[Int]*
 .. num_intento *[Int]*
 ***  Example
 +
 [source,json]
 ----
-{
-  "evaluaciones": [
-    {
-      "evaluacion_id": 5,
-      "examen_id": 1,
-      "status": "NUNCA",
-      "aciertos_totales": 0,
-      "num_intento": 0
-    },
-    {
-      "evaluacion_id": 6,
-      "examen_id": 5,
-      "status": "NUNCA",
-      "aciertos_totales": 0,
-      "num_intento": 0
-    },
-    {
-      "evaluacion_id": 4,
-      "examen_id": 7,
-      "status": "NUNCA",
-      "aciertos_totales": 0,
-      "num_intento": 0
-    }
-  ]
-}
+[
+  {
+    "evaluacion_id": 5,
+    "examen_id": 1,
+    "status": "NUNCA",
+    "aciertos_totales": 0,
+    "num_intento": 0
+  },
+  {
+    "evaluacion_id": 6,
+    "examen_id": 5,
+    "status": "NUNCA",
+    "aciertos_totales": 0,
+    "num_intento": 0
+  },
+  {
+    "evaluacion_id": 4,
+    "examen_id": 7,
+    "status": "NUNCA",
+    "aciertos_totales": 0,
+    "num_intento": 0
+  }
+]
 ----
 ** *NOTA* En caso de que no haya evaluaciones se regresa una array vacío
 
@@ -141,8 +149,7 @@ Error del sistema para guardar al usuario
 * Possible responses:
 ** _HTTP code_: `200`
 *** The responses has the following attributes
-. evaluacion_id *[Int]*
-. preguntas *[Array]*, cada elemento contiene:
+. *[Array]*, cada elemento contiene:
 .. texto_pregunta *[String]*
 .. opcion_correcta_id *[Int]*
 .. materia_id *[Int]*
@@ -154,58 +161,56 @@ Error del sistema para guardar al usuario
 +
 [source,json]
 ----
-{
-  "evaluacion": [
-    {
-      "materia_id": 1,
-        "opcion_correcta_id": 1,
-        "opciones": [
-          {
-            "opcion_id": 1,
-            "texto_opcion": "Especially value use."
-          },
-          {
-            "opcion_id": 2,
-            "texto_opcion": "Very garden memory rise."
-          },
-          {
-            "opcion_id": 3,
-            "texto_opcion": "Special they almost down quickly article."
-          },
-          {
-            "opcion_id": 4,
-            "texto_opcion": "Environmental various still success training."
-          }
-        ],
-        "pregunta_id": 1,
-        "texto_pregunta": "Card station seem relate sister fall."
-    },
-    {
-      "materia_id": 1,
-      "opcion_correcta_id": 8,
+[
+  {
+    "materia_id": 1,
+      "opcion_correcta_id": 1,
       "opciones": [
         {
-          "opcion_id": 5,
-          "texto_opcion": "Middle job skill success no establish."
+          "opcion_id": 1,
+          "texto_opcion": "Especially value use."
         },
         {
-          "opcion_id": 6,
-          "texto_opcion": "Artist ball by decide activity above."
+          "opcion_id": 2,
+          "texto_opcion": "Very garden memory rise."
         },
         {
-          "opcion_id": 7,
-          "texto_opcion": "Indeed population everything couple whatever research."
+          "opcion_id": 3,
+          "texto_opcion": "Special they almost down quickly article."
         },
         {
-          "opcion_id": 8,
-          "texto_opcion": "Hotel star current democratic."
+          "opcion_id": 4,
+          "texto_opcion": "Environmental various still success training."
         }
       ],
-      "pregunta_id": 2,
-      "texto_pregunta": "Out audience the away law. Crime may boy agree."
-    }
-  ]
-}
+      "pregunta_id": 1,
+      "texto_pregunta": "Card station seem relate sister fall."
+  },
+  {
+    "materia_id": 1,
+    "opcion_correcta_id": 8,
+    "opciones": [
+      {
+        "opcion_id": 5,
+        "texto_opcion": "Middle job skill success no establish."
+      },
+      {
+        "opcion_id": 6,
+        "texto_opcion": "Artist ball by decide activity above."
+      },
+      {
+        "opcion_id": 7,
+        "texto_opcion": "Indeed population everything couple whatever research."
+      },
+      {
+        "opcion_id": 8,
+        "texto_opcion": "Hotel star current democratic."
+      }
+    ],
+    "pregunta_id": 2,
+    "texto_pregunta": "Out audience the away law. Crime may boy agree."
+  }
+]
 ----
 ** _HTTP code_: `400`
 +
@@ -225,7 +230,7 @@ Error del sistema para guardar al usuario
 * Possible responses:
 ** _HTTP code_: `200`
 *** The responses has the following attributes
-. historial *[Array]*, cada elemento contiene:
+. *[Array]*, cada elemento contiene:
 .. aciertos_totales *[Int]*
 .. evaluacion_id *[Int]*
 .. fecha_aplicacion *[Date]*
@@ -234,16 +239,14 @@ Error del sistema para guardar al usuario
 +
 [source,json]
 ----
-{
-    "historial": [
-        {
-            "aciertos_totales": 60,
-            "evaluacion_id": 5,
-            "fecha_aplicacion": "Thu, 06 May 2021 15:03:03 GMT",
-            "nombre_examen": "Simulación UNAM 2012"
-        }
-    ]
-}
+[
+  {
+    "aciertos_totales": 60,
+      "evaluacion_id": 5,
+      "fecha_aplicacion": "Thu, 06 May 2021 15:03:03 GMT",
+      "nombre_examen": "Simulación UNAM 2012"
+  }
+]
 ----
 ** *NOTA* En caso de que no haya evaluaciones se regresa una objeto vacío
 
@@ -254,7 +257,7 @@ Error del sistema para guardar al usuario
 * Possible responses:
 ** _HTTP code_: `200`
 *** The responses has the following attributes
-. historial *[Obj]*
+. *[Obj]*
 .. aciertos_totales *[Int]*
 .. evaluacion_id *[Int]*
 .. num_intento *[Int]*
@@ -267,63 +270,61 @@ Error del sistema para guardar al usuario
 [source,json]
 ----
 {
-    "historial": {
-        "aciertos_totales": 60,
-        "evaluacion_id": "5",
-        "num_intento": 1,
-        "puntaje_materia": [
-            {
-                "materia_id": 1,
-                "nombre_materia": "Matemáticas",
-                "puntaje": 10
-            },
-            {
-                "materia_id": 2,
-                "nombre_materia": "Español",
-                "puntaje": 8
-            },
-            {
-                "materia_id": 3,
-                "nombre_materia": "Física",
-                "puntaje": 5
-            },
-            {
-                "materia_id": 4,
-                "nombre_materia": "Química",
-                "puntaje": 3
-            },
-            {
-                "materia_id": 5,
-                "nombre_materia": "Biología",
-                "puntaje": 1
-            },
-            {
-                "materia_id": 6,
-                "nombre_materia": "Historia Universal",
-                "puntaje": 6
-            },
-            {
-                "materia_id": 7,
-                "nombre_materia": "Historia de México",
-                "puntaje": 0
-            },
-            {
-                "materia_id": 8,
-                "nombre_materia": "Literatura",
-                "puntaje": 4
-            },
-            {
-                "materia_id": 9,
-                "nombre_materia": "Geografía",
-                "puntaje": 1
-            },
-            {
-                "materia_id": 10,
-                "nombre_materia": "Filosofía",
-                "puntaje": 8
-            }
-        ]
-    }
+    "aciertos_totales": 60,
+    "evaluacion_id": "5",
+    "num_intento": 1,
+    "puntaje_materia": [
+        {
+            "materia_id": 1,
+            "nombre_materia": "Matemáticas",
+            "puntaje": 10
+        },
+        {
+            "materia_id": 2,
+            "nombre_materia": "Español",
+            "puntaje": 8
+        },
+        {
+            "materia_id": 3,
+            "nombre_materia": "Física",
+            "puntaje": 5
+        },
+        {
+            "materia_id": 4,
+            "nombre_materia": "Química",
+            "puntaje": 3
+        },
+        {
+            "materia_id": 5,
+            "nombre_materia": "Biología",
+            "puntaje": 1
+        },
+        {
+            "materia_id": 6,
+            "nombre_materia": "Historia Universal",
+            "puntaje": 6
+        },
+        {
+            "materia_id": 7,
+            "nombre_materia": "Historia de México",
+            "puntaje": 0
+        },
+        {
+            "materia_id": 8,
+            "nombre_materia": "Literatura",
+            "puntaje": 4
+        },
+        {
+            "materia_id": 9,
+            "nombre_materia": "Geografía",
+            "puntaje": 1
+        },
+        {
+            "materia_id": 10,
+            "nombre_materia": "Filosofía",
+            "puntaje": 8
+        }
+    ]
 }
 ----
 ** _HTTP code_: `400`
@@ -408,50 +409,50 @@ _Puntaje materia_ attributes:
 [source,json]
 ----
 {
-    "aciertos_totales": 60,
-    "fecha_aplicacion": "2021-05-06 15:03:03",
-    "puntaje_materia": [
-        {
-            "materia_id": 1,
-            "puntaje": 10
-        },
-                {
-            "materia_id": 2,
-            "puntaje": 8
-        },
-                {
-            "materia_id": 3,
-            "puntaje": 5
-        },
-                {
-            "materia_id": 4,
-            "puntaje": 3
-        },
-                {
-            "materia_id": 5,
-            "puntaje": 1
-        },
-                {
-            "materia_id": 6,
-            "puntaje": 6
-        },
-                {
-            "materia_id": 7,
-            "puntaje": 0
-        },
-                {
-            "materia_id": 8,
-            "puntaje": 4
-        },
-                {
-            "materia_id": 9,
-            "puntaje": 1
-        },
-                {
-            "materia_id": 10,
-            "puntaje": 8
-        }
-    ]
+  "aciertos_totales": 60,
+  "fecha_aplicacion": "2021-05-06 15:03:03",
+  "puntaje_materia": [
+    {
+      "materia_id": 1,
+      "puntaje": 10
+    },
+    {
+      "materia_id": 2,
+      "puntaje": 8
+    },
+    {
+      "materia_id": 3,
+      "puntaje": 5
+    },
+    {
+      "materia_id": 4,
+      "puntaje": 3
+    },
+    {
+      "materia_id": 5,
+      "puntaje": 1
+    },
+    {
+      "materia_id": 6,
+      "puntaje": 6
+    },
+    {
+      "materia_id": 7,
+      "puntaje": 0
+    },
+    {
+      "materia_id": 8,
+      "puntaje": 4
+    },
+    {
+      "materia_id": 9,
+      "puntaje": 1
+    },
+    {
+      "materia_id": 10,
+      "puntaje": 8
+    }
+  ]
 }
 ----
 * Possible responses:
