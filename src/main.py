@@ -114,7 +114,7 @@ def register():
 def evaluaciones(current_user):
 
     evaluations = get_user_evaluations(current_user)
-    return json.dumps({'evaluaciones':evaluations})
+    return jsonify(evaluations)
 
 
 @app.route(ENDPOINT_BASE+'/evaluacion/<evaluacion_id>',methods=['GET'])
@@ -204,8 +204,7 @@ def guardar_calificacion_evaluacion(current_user,evaluacion_id):
 @token_auth_required
 def historial(current_user):
     history = get_evaluation_history(current_user['alumno_id'])
-    message = {'historial':history}
-    return make_response(jsonify(message))
+    return make_response(jsonify(history))
 
 
 @app.route(ENDPOINT_BASE+'/historial/<historial_id>',methods=['GET'])
