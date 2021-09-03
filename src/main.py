@@ -114,7 +114,7 @@ def register():
 def evaluaciones(current_user):
 
     evaluations = get_user_evaluations(current_user)
-    return jsonify(evaluations)
+    return make_response(jsonify(evaluations))
 
 
 @app.route(ENDPOINT_BASE+'/evaluacion/<evaluacion_id>',methods=['GET'])
@@ -123,7 +123,7 @@ def evaluacion(evaluacion_id):
     evaluation = get_evaluation_by_id(evaluacion_id)
 
     if evaluation:
-        return make_response(jsonify({'evaluacion':evaluation}))
+        return make_response(jsonify(evaluation))
     else:
         message = {'message':'No se encontró la evaluación solicitada'}
         return make_response(jsonify(message), 400)
@@ -212,7 +212,7 @@ def historial(current_user):
 def historial_by_id(current_user,historial_id):
     history = get_evaluation_history_by_id(current_user['alumno_id'],historial_id)
     if history:
-        return make_response(jsonify({'historial':history}))
+        return make_response(jsonify(history))
     else:
         message = {"message":"No existe la evaluación solicitada"}
         return make_response(jsonify(message),400)
