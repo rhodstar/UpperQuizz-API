@@ -248,7 +248,7 @@ def get_evaluation_history(student_id):
                 "select count(*) from pregunta where examen_id={}".format(
                     r['examen_id']),"fetchone")
 
-            evaluation_score = r['aciertos_totales']/total_preguntas['count']
+            evaluation_score = (r['aciertos_totales']/total_preguntas['count'])*10
             acum_calif_evaluation += evaluation_score
 
         general_score = acum_calif_evaluation / num_evaluations
