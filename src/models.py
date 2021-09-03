@@ -87,6 +87,18 @@ def get_user_evaluations(user):
                 aciertos_totales = r['aciertos_totales']
             item_dict['evaluacion_id'] = r['evaluacion_id']  
             item_dict['examen_id'] = r['examen_id']  
+            
+            num_preguntas_contestadas = db.pull(
+                "select count(*) from respuestas_alumno where evaluacion_id={}".format(
+                    r['evaluacion_id']),"fetchone")
+
+            total_preguntas = db.pull(
+                    "select count(*) from pregunta where examen_id={}".format(
+                        r['examen_id']),"fetchone")
+
+            item_dict['num_preguntas_contestadas'] = num_preguntas_contestadas['count']
+            item_dict['total_preguntas'] = total_preguntas['count']
+
             item_dict['status'] = r['nombre']
             item_dict['aciertos_totales'] = aciertos_totales
             item_dict['num_intento'] = r['num_intento']
@@ -210,7 +222,7 @@ def get_evaluation_history(student_id):
     examen = {
         "table_name":"examen",
         "alias": "e",
-        "fields": ["nombre"]
+        "fields": ["examen_id","nombre"]
     }
 
     entities = [evaluacion_alumno,examen]
@@ -219,6 +231,8 @@ def get_evaluation_history(student_id):
     query = db.compound_query_builder(entities,join_conditions,conditions)
 
     res = db.pull(query)
+    num_evaluations = len(res)
+    acum_calif_evaluation = 0
     if res:
         res_dict = []
         for r in res:
@@ -228,7 +242,17 @@ def get_evaluation_history(student_id):
             item_dict['aciertos_totales'] = r['aciertos_totales']
             item_dict['fecha_aplicacion'] = r['fecha_aplicacion']
             res_dict.append(item_dict)
-        return res_dict
+
+            # Calculating general score
+            total_preguntas = db.pull(
+                "select count(*) from pregunta where examen_id={}".format(
+                    r['examen_id']),"fetchone")
+
+            evaluation_score = r['aciertos_totales']/total_preguntas
+            acum_calif_evaluation += evaluation_score
+
+        general_score = acum_calif_evaluation / num_evaluations
+        return {"promedio_general": general_score, "historial": res_dict}
     else:
         return []
 
