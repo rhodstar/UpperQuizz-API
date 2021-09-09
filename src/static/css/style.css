@@ -1,0 +1,137 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosansavestan.css);
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-family: "Noto Sans Avestan", sans-serif;
+  background-color: #fcfafa;
+}
+
+header {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  background-image: url("images/bg.png");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+
+.left-container {
+  padding: 5%;
+  margin-right: 20px;
+}
+
+.right-container {
+  padding-top: 5%;
+}
+
+a {
+  text-decoration: none;
+}
+
+.logo {
+  width: 30%;
+  margin-bottom: 3%;
+}
+
+.phone {
+  width: 60%;
+  margin-left: 20%;
+}
+
+.title {
+  font-size: 90px;
+  margin-bottom: 3%;
+}
+
+.slogan {
+  color: #b0a8a8;
+  margin-bottom: 30px;
+  font-size: 25px;
+  margin-bottom: 5%;
+}
+
+.btn-primary {
+  padding: 10px;
+  background-color: #f9bd3f;
+  border-radius: 50px;
+  font-size: large;
+  color: #2a396c;
+  margin: 0% 2%;
+}
+
+.btn-secondary {
+  padding: 10px;
+  background-color: #fedd55;
+  border-radius: 50px;
+  font-size: large;
+  color: #2a396c;
+}
+
+.section-title {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.container {
+  margin: 3%;
+}
+
+.cards {
+  margin: 3% 10%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.card {
+  margin: 0% 10%;
+}
+
+.card img {
+  width: 40%;
+  margin-bottom: 5%;
+}
+
+.title-card {
+  font-size: 25px;
+  margin-bottom: 3%;
+}
+
+.carrousel {
+  margin-top: 3%;
+  display: flex;
+}
+
+.carrousel img {
+  margin: 0% 3%;
+  height: 200px;
+}
+
+.wide-container {
+  background-color: #f4f3f3;
+  padding: 5% 10%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+footer {
+  margin-top: 5%;
+  padding: 2% 3%;
+  background-color: #48578b;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.right-footer {
+  text-align: right;
+}
+
+.footer-title {
+  margin-bottom: 5%;
+}
