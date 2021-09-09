@@ -8,6 +8,7 @@ import datetime
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 import traceback
+from flask import render_template
 
 from src.models import *
 
@@ -43,12 +44,19 @@ def token_auth_required(f):
 
 @app.after_request
 def apply_caching(response):
-    response.headers["Content-Type"] = "application/json"
+    if not response.headers["Content-Type"] == "text/html":
+        response.headers["Content-Type"] = "application/json"
     return response
 
 ##############################################################################
 ##########                      Endpoints                           ##########
 ##############################################################################
+
+@app.route('/',methods=['GET'])
+def home():
+    response = make_response(render_template("index.html"))
+    response.headers["Content-Type"] = "text/html"
+    return response
 
 @app.route(ENDPOINT_BASE+'/login',methods=['POST'])
 def login():
