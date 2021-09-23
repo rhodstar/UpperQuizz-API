@@ -42,12 +42,15 @@ def assign_exams_to_user(email):
     exam_ids = [ i for i in range(1,max_examen_id+1)]
     real_exam_ids = []
 
+    # Assigning 3 exams for new user
     for _ in range(3):
         item = random.choice(exam_ids)
         real_exam_ids.append(item)
         exam_ids.remove(item)
 
     for i in real_exam_ids:
+        # 3 stands for the id for status_evaluacion_id
+        # 3 = NUNCA
         if not db.push(query_insertion,(0,3,alumno_id,i)):
             return False
     return True
@@ -56,7 +59,7 @@ def get_user_evaluations(user):
     examen = {
         "table_name": "examen", 
         "alias": "e",
-        "fields": ["examen_id","nombre"]
+        "fields": ["examen_id","nombre nombre_examen"]
     }
     status_evaluacion = {
         "table_name": "status_evaluacion", 
@@ -87,6 +90,7 @@ def get_user_evaluations(user):
                 aciertos_totales = r['aciertos_totales']
             item_dict['evaluacion_id'] = r['evaluacion_id']  
             item_dict['examen_id'] = r['examen_id']  
+            item_dict['nombre_examen'] = r['nombre_examen']  
             
             num_preguntas_contestadas = db.pull(
                 "select count(*) from respuestas_alumno where evaluacion_id={}".format(
@@ -119,8 +123,14 @@ def get_evaluation_by_id(evaluation_id):
         "alias": "o",
         "fields": ["opcion_id","texto_opcion","es_correcta"]
     }
-    entities = [pregunta,opcion]
-    join_conditions = ["p.pregunta_id=o.pregunta_id"]
+    materia = {
+        "table_name": "materia",
+        "alias": "m",
+        "fields": ["nombre"]
+    }
+
+    entities = [pregunta,opcion, materia]
+    join_conditions = ["p.pregunta_id=o.pregunta_id", "p.materia_id=m.materia_id"]
     conditions = ["p.examen_id=({})".format(db.simple_query_builder(
         ["examen_id"],"evaluacion_alumno",
         ["evaluacion_id={}".format(evaluation_id)]
@@ -155,6 +165,7 @@ def get_evaluation_by_id(evaluation_id):
         question['pregunta_id'] = q['pregunta_id'] 
         question['texto_pregunta'] = q['texto_pregunta'] 
         question['materia_id'] = q['materia_id'] 
+        question['materia'] = q['nombre'] 
         options.append({'opcion_id': q['opcion_id'],'texto_opcion': q['texto_opcion']})
 
         if q['es_correcta']:
