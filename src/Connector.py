@@ -4,20 +4,20 @@ import psycopg2
 import psycopg2.extras
 import os
 
-from dotenv import load_dotenv
-load_dotenv()
-DATABASE = os.getenv('DATABASE')
-DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
-DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
+# from dotenv import load_dotenv
+# load_dotenv()
+# DATABASE = os.getenv('DATABASE')
+# DATABASE_USERNAME = os.getenv('DATABASE_USERNAME')
+# DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 class Connector:
 
     def __init__(self):
-        self.con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
-            password=DATABASE_PASSWORD)
-        # self.con = psycopg2.connect(DATABASE_URL)
+        # self.con = psycopg2.connect(database=DATABASE,user=DATABASE_USERNAME,
+        #     password=DATABASE_PASSWORD)
+        self.con = psycopg2.connect(DATABASE_URL)
 
     def pull(self,query,fetch_type="fetchall"):
         with self.con:
