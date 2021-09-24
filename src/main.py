@@ -80,7 +80,7 @@ def login():
         response = make_response(message,400, http_header)
         return response
     else:
-        exp_time = datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
+        exp_time = datetime.datetime.utcnow() + datetime.timedelta(weeks=6)
         encode_data = {'alumno_id':user['alumno_id'], 'exp':exp_time}
         token = jwt.encode(encode_data, app.config['SECRET_KEY'],algorithm="HS256")
 
