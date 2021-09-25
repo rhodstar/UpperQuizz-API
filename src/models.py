@@ -145,21 +145,22 @@ def get_evaluation_by_id(evaluation_id):
         return []
 
     questions_formated = []
-    question_id_counter = questions[0]['pregunta_id']
+    current_question = questions[0]['pregunta_id']
+    tope_questions = len(questions) - 1
     
     # Get max question id and max opcion id
     question_id_max = max([q['pregunta_id'] for q in questions])
-    opcion_id_max = max([q['opcion_id'] for q in questions])
 
     options = []
     correct_option_id = -1
-    for q in questions:
-        if q['pregunta_id'] != question_id_counter:
+    for index,q in enumerate(questions):
+        if q['pregunta_id'] != current_question:
             question['opciones'] = options
             question['opcion_correcta_id'] = correct_option_id
             questions_formated.append(question)
             options = []
-            question_id_counter +=1
+            if index < tope_questions:
+                current_question = questions[index+1]['pregunta_id']
 
         question = {}
         question['pregunta_id'] = q['pregunta_id'] 
@@ -171,12 +172,13 @@ def get_evaluation_by_id(evaluation_id):
         if q['es_correcta']:
             correct_option_id = q['opcion_id']
 
-        if q['pregunta_id'] == question_id_max and q['opcion_id'] == opcion_id_max:
+        if q['pregunta_id'] == question_id_max and index == tope_questions:
             question['opciones'] = options
             question['opcion_correcta_id'] = correct_option_id
             questions_formated.append(question)
             options = []
-            question_id_counter +=1
+            if index < tope_questions:
+                current_question = questions[index+1]['pregunta_id']
 
     return questions_formated
 
