@@ -180,6 +180,7 @@ def get_evaluation_by_id(evaluation_id):
             if index < tope_questions:
                 current_question = questions[index+1]['pregunta_id']
 
+    questions_formated.sort(key=lambda q: q["materia_id"])
     return questions_formated
 
 
