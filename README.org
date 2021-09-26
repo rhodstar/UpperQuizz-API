@@ -1,55 +1,18 @@
 #+TITLE: UpperQuizz
+#+AUTHOR: Rodrigo Francisco Pablo, Emanuel Flores Martínez, Galileo Garibaldi Cabrera
 #+DATE:  <2021-09-25 Sat>
 
 #+ATTR_ORG: :width 300
+#+ATTR_HTML: :width 300
 [[./README.assets/UpperQuizz.png]]
 
 *Notas:*
 - En este repositorio se aloja el código de la API REST.
   Que a su vez se aloja en [[https://upper-quizz.herokuapp.com/][Heroku]]
+- La documentación de la api se encuentra [[./docs/README.adoc][aquí]]
 - El código de la aplicación iOS se encuentra en el siguiente [[https://github.com/e-muf/UpperQuizz-iOS/][link]]
 - La documentación técnica se puede leer en este /README/ o en el siguiente [[./docs/upperquizz-docs.pdf][link]]
 - La presentación del proyecto se puede leer [[./docs/upper-quizz-presentacion.pdf][aquí]]
-
-** Para ejecutar la app
-
-Requisitos:
-- /Carthage/
-- /XCodde/ en su versión más reciente
-
-El primer paso es descargar el repositorio, utilizando la opción de /zip/
-o vía /git/
-
-#+begin_src
-git clone https://github.com/e-muf/UpperQuizz-iOS
-#+end_src
-
-En caso de no tener Carthage, se debe instalar con =brew=
-
-#+begin_src shell
-brew install carthage
-#+end_src
-
-Dentro del directorio del repositorio ejecutamos los siguiente
-
-#+begin_src shell
-carthage bootstrap --platform iOS --use-xcframworks --no-use-binaries
-#+end_src
-
-** Screenshos
-
-#+ATTR_ORG: :width 300
-[[./screenshots/s04.png]]
-#+ATTR_ORG: :width 300
-[[./screenshots/s05.png]]
-#+ATTR_ORG: :width 300
-[[./screenshots/s06.png]]
-#+ATTR_ORG: :width 300
-[[./screenshots/s07.png]]
-#+ATTR_ORG: :width 300
-[[./screenshots/s03.png]]
-#+ATTR_ORG: :width 300
-[[./screenshots/s02.png]]
 
 ** Introducción
 
@@ -105,3 +68,63 @@ Los aspectos más destacados de la aplicación son:
 
 - *Carthage*: Para el manejo de dependencias
 - *MVVM*: Se utilizó la arquitectura modelo vista, vista modelo para la creación de esta aplicación.
+
+*** MVVM (Model - View - View Model)
+
+MVVM es la abreviación de 3 palabras: Model, View y View Model. El concepto principal de MVVM es construir un /view model/, que pueda representar los datos a través de la vista.
+
+[[./README.assets/mvvm.png]]
+
+En la imagen anterior se observa que /view model/ o la vista-modelo ocupa la posición central, por lo que se encarga de envíar y recibir los datos del /modelo/ y proveerlos a la /vista/
+
+*** Ejecución la app
+
+Requisitos:
+- /Carthage/
+- /XCodde/ en su versión más reciente
+
+El primer paso es descargar el repositorio, utilizando la opción de /zip/
+o vía /git/
+
+#+begin_src
+git clone https://github.com/e-muf/UpperQuizz-iOS
+#+end_src
+
+En caso de no tener Carthage, se debe instalar con =brew=
+
+#+begin_src shell
+brew install carthage
+#+end_src
+
+Dentro del directorio del repositorio ejecutamos los siguiente
+
+#+begin_src shell
+carthage bootstrap --platform iOS --use-xcframworks --no-use-binaries
+#+end_src
+
+*** Screenshots
+
+*Registo*
+#+ATTR_ORG: :width 300
+#+ATTR_HTML: :width 300
+[[./screenshots/s02.png]]
+*Login*
+#+ATTR_ORG: :width 300
+#+ATTR_HTML: :width 300
+[[./screenshots/s03.png]]
+*Evaluaciones (pantalla principal)*
+#+ATTR_ORG: :width 300
+#+ATTR_HTML: :width 300
+[[./screenshots/s04.png]]
+*Quizz*
+#+ATTR_ORG: :width 300
+#+ATTR_HTML: :width 300
+[[./screenshots/s05.png]]
+*Recordatrios*
+#+ATTR_ORG: :width 300
+#+ATTR_HTML: :width 300
+[[./screenshots/s06.png]]
+*Resultados examen*
+#+ATTR_ORG: :width 300
+#+ATTR_HTML: :width 300
+[[./screenshots/s07.png]]
