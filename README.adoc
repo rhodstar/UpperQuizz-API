@@ -1,4 +1,4 @@
-= Proyecto diplomado
+= UpperQuizz
 Creado por Rodrigo Francisco <rhodfra@gmail.com>
 Version 1.0, 26.06.2021
 :toc: 
@@ -18,17 +18,8 @@ endif::[]
 
 Proyecto final para el diplomado de iOS.
 
-toc::[]
-
 image::UpperQuizz.png[logo,width=300]
 
-
-[source,sh]
-----
-# Local execution
-pipenv shell
-FLASK_APP=main.py FLASK_ENV=development flask run
-----
 
 Nuestra aplicación esta orientada para personas (en su mayoría estudiantes) que
 se encuentran en el proceso de admisión a educación media superior, es decir,
