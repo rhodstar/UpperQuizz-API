@@ -13,12 +13,14 @@
 [[./README.assets/UpperQuizz.png]]
 
 *CONTENIDO:*
-- En este repositorio se aloja el código de la API REST. Que a su vez se aloja en [[https://upper-quizz.herokuapp.com/][Heroku]]
-- La documentación de la api se encuentra [[./docs/README.adoc][aquí]]
 - El código de la aplicación iOS se encuentra en el siguiente [[https://github.com/e-muf/UpperQuizz-iOS/][link]]
 - La documentación técnica se puede leer en este /README/ o en el siguiente [[./docs/upperquizz-docs.pdf][link]]
 - El *VIDEO* se encuentra en la siguiente liga: https://youtu.be/r5rMjd4dzVE
 - La presentación del proyecto se puede leer [[./docs/upper-quizz-presentacion.pdf][aquí]]
+
+*OTROS Links importantes*
+- En este repositorio se aloja el código de la API REST. Que a su vez se aloja en [[https://upper-quizz.herokuapp.com/][Heroku]]
+- La documentación de la api se encuentra [[./docs/README.adoc][aquí]]
 
 ** Introducción
 
