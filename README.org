@@ -1,7 +1,7 @@
 #+TITLE: UpperQuizz
 #+DATE:  <2021-09-25 Sat>
 
-#+ATTR_HTML: width="300px"
+#+ATTR_ORG: :width 300
 [[./README.assets/UpperQuizz.png]]
 
 *Notas:*
@@ -11,13 +11,44 @@
 - La documentación técnica se puede leer en este /README/ o en el siguiente [[./docs/upperquizz-docs.pdf][link]]
 - La presentación del proyecto se puede leer [[./docs/upper-quizz-presentacion.pdf][aquí]]
 
+** Para ejecutar la app
+
+Requisitos:
+- /Carthage/
+- /XCodde/ en su versión más reciente
+
+El primer paso es descargar el repositorio, utilizando la opción de /zip/
+o vía /git/
+
+#+begin_src
+git clone https://github.com/e-muf/UpperQuizz-iOS
+#+end_src
+
+En caso de no tener Carthage, se debe instalar con =brew=
+
+#+begin_src shell
+brew install carthage
+#+end_src
+
+Dentro del directorio del repositorio ejecutamos los siguiente
+
+#+begin_src shell
+carthage bootstrap --platform iOS --use-xcframworks --no-use-binaries
+#+end_src
+
 ** Screenshos
 
+#+ATTR_ORG: :width 300
 [[./screenshots/s04.png]]
+#+ATTR_ORG: :width 300
 [[./screenshots/s05.png]]
+#+ATTR_ORG: :width 300
 [[./screenshots/s06.png]]
+#+ATTR_ORG: :width 300
 [[./screenshots/s07.png]]
+#+ATTR_ORG: :width 300
 [[./screenshots/s03.png]]
+#+ATTR_ORG: :width 300
 [[./screenshots/s02.png]]
 
 ** Introducción
@@ -69,3 +100,8 @@ Para almacenar toda la información mostrada en la aplicación, así como la inf
 [[./db/diplomado.jpg]]
 
 ** Características de la aplicación
+
+Los aspectos más destacados de la aplicación son:
+
+- *Carthage*: Para el manejo de dependencias
+- *MVVM*: Se utilizó la arquitectura modelo vista, vista modelo para la creación de esta aplicación.
