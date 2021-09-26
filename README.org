@@ -11,6 +11,15 @@
 - La documentación técnica se puede leer en este /README/ o en el siguiente [[./docs/upperquizz-docs.pdf][link]]
 - La presentación del proyecto se puede leer [[./docs/upper-quizz-presentacion.pdf][aquí]]
 
+** Screenshos
+
+[[./screenshots/s04.png]]
+[[./screenshots/s05.png]]
+[[./screenshots/s06.png]]
+[[./screenshots/s07.png]]
+[[./screenshots/s03.png]]
+[[./screenshots/s02.png]]
+
 ** Introducción
 
 *UpperQuizz* esta orientada para personas (en su mayoría estudiantes) que se encuentran en el proceso de admisión a educación superior, es decir, que quieren ingresa a la universidad. Como objetivo base, nos enfocamos en el mercado usuarios cuyo objetivo se entrar a universidades como la UNAM, IPN, UAM o BUAP.
@@ -53,6 +62,7 @@ Para almacenar toda la información mostrada en la aplicación, así como la inf
 - *PostgreSQL*: Como gestor de base de datos
 - *Python*: Como lenguaje de backend
 - *Flask*: Para la creación de API rest
+- *Heroku*: Para hostear la API
 
 *** Modelo de datos
 
