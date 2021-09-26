@@ -45,7 +45,7 @@
     }
 
     .logo {
-      width: 30%;
+      width: 50%;
       margin-bottom: 3%;
     }
 
@@ -115,11 +115,17 @@
     .carrousel {
       margin-top: 3%;
       display: flex;
+      flex-wrap: wrap;
+      text-align: center;
     }
 
     .carrousel img {
       margin: 0% 3%;
       height: 200px;
+    }
+
+    .carrousel-item {
+      text-align: center;
     }
 
     .wide-container {
@@ -148,6 +154,79 @@
     .footer-title {
       margin-bottom: 5%;
     }
+
+    /* Extra small devices (phones, 600px and down) */
+    @media only screen and (max-width: 600px) {
+      header {
+        height: 60vh;
+        grid-template-columns: 1fr;
+      }
+
+      .title {
+        font-size: 50px;
+      }
+
+      .slogan {
+        font-size: medium;
+        margin-bottom: 10%;
+      }
+
+      .right-container {
+        display: none;
+      }
+
+      .title-card {
+        font-size: 18px;
+      }
+
+      .section-title {
+        font-size: 25px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr 1fr;
+        margin: 5% 1%;
+      }
+
+      .carrousel {
+        margin-top: 3%;
+        display: grid;
+        grid-template-columns: 2;
+      }
+
+      .carrousel img {
+        margin: 0% 3%;
+        height: 130px;
+      }
+
+      .buttons {
+        flex-direction: column;
+      }
+
+      .marg-top {
+        margin-top: 1%;
+      }
+
+      footer {
+        flex-direction: column;
+      }
+
+      .right-footer {
+        margin-top: 3%;
+        text-align: center;
+      }
+
+      .left-footer {
+        text-align: center;
+      }
+    }
+
+    /* @media only screen and (min-width: 600px) {
+      header {
+        height: 70vh;
+        grid-template-columns: 2fr 1fr;
+      }
+    } */
   </style>
   <body>
     <header>
@@ -215,22 +294,30 @@
     <div class="container">
       <p class="section-title">Entra a la universidad de tus sueños</p>
       <div class="carrousel">
-        <img
-          src="{{ url_for('static', filename='images/unam.png') }}"
-          alt="unam"
-        />
-        <img
-          src="{{ url_for('static', filename='images/ipn.png') }}"
-          alt="ipn"
-        />
-        <img
-          src="{{ url_for('static', filename='images/uam.png') }}"
-          alt="uam"
-        />
-        <img
-          src="{{ url_for('static', filename='images/buap.png') }}"
-          alt="buap"
-        />
+        <div class="carrousel-item">
+          <img
+            src="{{ url_for('static', filename='images/unam.png') }}"
+            alt="unam"
+          />
+        </div>
+        <div class="carrousel-item">
+          <img
+            src="{{ url_for('static', filename='images/ipn.png') }}"
+            alt="ipn"
+          />
+        </div>
+        <div class="carrousel-item">
+          <img
+            src="{{ url_for('static', filename='images/uam.png') }}"
+            alt="uam"
+          />
+        </div>
+        <div class="carrousel-item">
+          <img
+            src="{{ url_for('static', filename='images/buap.png') }}"
+            alt="buap"
+          />
+        </div>
       </div>
     </div>
     <div class="wide-container">
@@ -239,7 +326,7 @@
           >Obtener código para iOS</a
         >
         <a
-          class="btn-secondary"
+          class="btn-secondary marg-top"
           href="https://github.com/rhodstar/UpperQuizz-API"
           >Ver documentación técnica</a
         >
