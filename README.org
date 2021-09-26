@@ -4,11 +4,12 @@
 #+LATEX_HEADER: \usepackage[total={17cm,23cm}, top=2cm, left=2cm]{geometry}
 #+LATEX_HEADER: \renewcommand{\familydefault}{\sfdefault}
 #+LATEX_HEADER: \renewcommand\thepage{}
+#+LATEX_HEADER: \parindent=0mm
 #+OPTIONS: num:nil toc:nil
 
 #+ATTR_ORG: :width 300
 #+ATTR_HTML: :width 300
-#+ATTR_LATEX: :width 10cm
+#+ATTR_LATEX: :width 12cm
 [[./README.assets/UpperQuizz.png]]
 
 *Notas:*
