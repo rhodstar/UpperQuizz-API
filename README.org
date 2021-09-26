@@ -11,49 +11,51 @@
 - La documentación técnica se puede leer en este /README/ o en el siguiente [[./docs/upperquizz-docs.pdf][link]]
 - La presentación del proyecto se puede leer [[./docs/upper-quizz-presentacion.pdf][aquí]]
 
- TODO: AGREGAR 5 CAPTURAS DE PANTALLA:w
-
 ** Introducción
 
-*UpperQuizz* esta orientada para personas (en su mayoría estudiantes) que
-se encuentran en el proceso de admisión a educación superior, es decir,
-que quieren ingresa a la universidad. Para esta primera entrega de la aplicación,
-nos enfocamos en usuarios cuyo objetivo se entrar a universidades como la
-UNAM, IPN, UAM o BUAP.
+*UpperQuizz* esta orientada para personas (en su mayoría estudiantes) que se encuentran en el proceso de admisión a educación superior, es decir, que quieren ingresa a la universidad. Como objetivo base, nos enfocamos en el mercado usuarios cuyo objetivo se entrar a universidades como la UNAM, IPN, UAM o BUAP.
 
-La aplicación se plantea como una herramienta de apoyo que complemente los
-estudios y métricas de los estudiantes. En otras palabras, la aplicación, en su
-primera versión no pretende sustituir un curso completo de ingreso a nivel
-superior. Esta aplicación ayudará a realizar exámenes diágnostico y dar
-seguimiento para medir el progreso.
+La aplicación se plantea como una herramienta de apoyo que complemente los estudios y métricas de los estudiantes. En otras palabras, la aplicación, en su primera versión no pretende sustituir un curso completo de ingreso a nivel superior. Esta aplicación ayudará a realizar exámenes diágnostico y dar seguimiento para medir el progreso.
 
-Actualmente existen aplicaciones similares en el mercado, cómo las que se
-enlistan a continuación.
+Actualmente existen aplicaciones similares en el mercado, cómo las que se enlistan a continuación.
 
 ** Reglas de negocio
 
-Un estudiante debe registrarse a la aplicación para poder llevar su progreso. En
-esta primera versión solo nos enfocaremos en que los usuarios puedan realizar
-exámenes de simulación.
+Un estudiante debe registrarse a la aplicación. Una vez registrado podrá acceder, en principio a 3 evaluaciones. Dicha evaluaciones, también pueden llamarse /exámenes de simulación/.
 
-Un _examen de simulación_ esta conformado por un conjunto de preguntas. Dicho
-conjunto de preguntas se dividen en preguntas por materia, las materias
-consideradas en un inicio son:
+Las evaluaciones puede contestarse las veces que sean necesarias con la finalidad de que el usuario practique y domine las preguntas de cada una de las materias.
 
-- Español,
-- Historia universal,
-- Historia de México.
+Un _examen de simulación_ esta conformado por un conjunto de preguntas (puede variar conforme la evaluación). Dicho conjunto de preguntas se dividen en preguntas por materia, las materias consideradas son:
 
-La pregunta se conforma de un texto (el cual describe la pregunta) y un conjunto
-de opciones que pueden ser mínimo 2 y máximo 6 opciones. Dichas opciones son
-texto plano por el momento.
+- Matemáticas
+- Español
+- Física
+- Química
+- Biología
+- Historia universal
+- Historia de México
+- Literatura
+- Geografía
+- Filosofía
 
-Al ser un examen se debe recordar que se debe tener un apartado para guardar las
-respuestas de cada pregunta.
+La pregunta se conforma de un texto (el cuál describe la pregunta) y 4 opciones por pregunta. Dichas opciones son texto plano.
 
-Cuando un estudiante termine de realizar el examen se le califica, se guardan
-los siguientes datos: fecha de realización,puntaje total, puntaje por cada
-materia, respuestas del estudiante y mapa de reactivos correctos e incorrectos.
-Además también se debe guardar el identificador del examen que se realizó.
-La interfaz desplegará los puntajes con gráficas o algo similar que permita ver
-el avance.
+Cuando un estudiante termine de realizar el examen se le califica, se guardan los siguientes datos: fecha de realización, puntaje total, puntaje por cada materia y respuestas del estudiante. Además también se guarda el identificador del examen que se realizó. La interfaz desplega los puntajes gráficamente, de tal forma que el usuario se puede dar cuenta de su progreso.
+
+Además de la sección de las evaluaciones, el usuario puede ver su historial, en donde se le desplagan las evaluaciones que ha realizado, con sus aciertos generales y aciertos por cada materia. En esta misma sección se le muestra un promedio general en escala del 0 a 10.
+
+Por último, se tiene una sección llamada "Recodatorios", en donde se le muestra al usuario información las convocatorias de las universidades más importantes, así como la fecha de registro al examen y fecha tentativa de realización del mismo.
+
+** Características del backend
+
+Para almacenar toda la información mostrada en la aplicación, así como la información generada por el usuario se hace uso de las siguientes tecnologías:
+
+- *PostgreSQL*: Como gestor de base de datos
+- *Python*: Como lenguaje de backend
+- *Flask*: Para la creación de API rest
+
+*** Modelo de datos
+
+[[./db/diplomado.jpg]]
+
+** Características de la aplicación
