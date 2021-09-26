@@ -1,9 +1,14 @@
 #+TITLE: UpperQuizz
 #+AUTHOR: Rodrigo Francisco Pablo, Emanuel Flores Martínez, Galileo Garibaldi Cabrera
 #+DATE:  <2021-09-25 Sat>
+#+LATEX_HEADER: \usepackage[total={17cm,23cm}, top=2cm, left=2cm]{geometry}
+#+LATEX_HEADER: \renewcommand{\familydefault}{\sfdefault}
+#+LATEX_HEADER: \renewcommand\thepage{}
+#+OPTIONS: num:nil toc:nil
 
 #+ATTR_ORG: :width 300
 #+ATTR_HTML: :width 300
+#+ATTR_LATEX: :width 10cm
 [[./README.assets/UpperQuizz.png]]
 
 *Notas:*
@@ -51,23 +56,30 @@ Por último, se tiene una sección llamada "Recodatorios", en donde se le muestr
 
 ** Características del backend
 
-Para almacenar toda la información mostrada en la aplicación, así como la información generada por el usuario se hace uso de las siguientes tecnologías:
-
-- *PostgreSQL*: Como gestor de base de datos
-- *Python*: Como lenguaje de backend
-- *Flask*: Para la creación de API rest
-- *Heroku*: Para hostear la API
+Para almacenar toda la información mostrada en la aplicación, así como la información generada por el usuario se hizo lo siguiente
 
 *** Modelo de datos
-
 [[./db/diplomado.jpg]]
+
+*** Tecnologías utilizadas
+
+**** PostgreSQL
+PostgreSQL es un gestor de base de datos, que se reconoce por ser un gestor de tipo entidad-relación /open source/. Se distingue por ser robusto, confiable y tener buen rendimiento. Además de ser soportando en muchas plataformas de /hosting/.
+
+**** Python
+Python es un lenguaje de programación interpretado de alto nivel y de propósito general. Esta diseñado con la fisolofía de ser fácil de leer, crear código limpio y código limpio para proyecto pequeños y de gran escala. Además de ser muy versátil ya que sus aplicaciones son desde la creación de aplicaciones de escritorios, aplicaciones web, sistemas embebidos, etc.
+
+**** Flask
+Flask es un /micro/ framework web escrito en Python. Se clasifica como microframework porque no necesita de ningua herramienta o librería en particular para poder funcionar. No tiene abstración de capa de base de datos, validación de formularios o cualquier otro componente provisto por librerías de tercer. Todo lo anterior se agrega por medio de extensión o dependencias manejadas por el usuario según su conveniencia.
+Para el caso de este proyecto se utilizó Flask para crear la API REST
+
+**** Heroku
+Es una plataforma conocida como plataforma como servicio (PaaS, por sus siglas en inglés), permite a los desarrolladores construir, correr y operar aplicaciones enteramente en la nube. Soporta múltiples lenguajes de programación, como Ruyb, Java, Node.js, Scala, Clojure, Python, PHP y Go.
+Además, gracias a los /add-ons/ podemos agregar servicios de base bases de datos y algunas otras tecnologías que nuestra aplicación pueda ocupar.
 
 ** Características de la aplicación
 
-Los aspectos más destacados de la aplicación son:
-
-- *Carthage*: Para el manejo de dependencias
-- *MVVM*: Se utilizó la arquitectura modelo vista, vista modelo para la creación de esta aplicación.
+A continuación se exponen la arquitectura MVVM, así como algunas herramientas para la creación de la aplicación
 
 *** MVVM (Model - View - View Model)
 
@@ -76,6 +88,21 @@ MVVM es la abreviación de 3 palabras: Model, View y View Model. El concepto pri
 [[./README.assets/mvvm.png]]
 
 En la imagen anterior se observa que /view model/ o la vista-modelo ocupa la posición central, por lo que se encarga de envíar y recibir los datos del /modelo/ y proveerlos a la /vista/
+
+**** Modelo
+Representa los datos (en tiempo real), que serán utilizados en la aplicación. El modelo se utiliza principalmente para separar de los datos de la lógica de negocios.
+
+**** Vista
+La vista representa la interfaz con la que el usuario interactua en la aplicación. Este elemento también posee propiedades para utilizar comportamientos asociados con el modelo, como identificar y actuar conforme la entrada del usuario.
+
+**** Vista-Modelo
+Es la parte más esencial de la arquitectura MVVM, el /viewModel/ presenta la parte de la vista separada del modelo. Hace que la vista solo sostenga la parte *formateada* de los datos, además se encarga de la comunicación entre el modelo y la vista.
+
+*** Gestor de dependencias
+
+Como gestor de dependencias se hizo uso de *Carthage*.
+
+/Carthage/, es un gestor de dependencias que nos permite agregar frameworks a nuestra aplicación de /Cocoa/. Este gestor se distigue por compilar la dependencias y proveer frameworks en forma de _binarios_ sin modificar la estructura original del proyecto.
 
 *** Ejecución la app
 
@@ -107,24 +134,34 @@ carthage bootstrap --platform iOS --use-xcframworks --no-use-binaries
 *Registo*
 #+ATTR_ORG: :width 300
 #+ATTR_HTML: :width 300
+#+ATTR_LATEX: :width 5.5cm
 [[./screenshots/s02.png]]
 *Login*
 #+ATTR_ORG: :width 300
 #+ATTR_HTML: :width 300
+#+ATTR_LATEX: :width 5.5cm
 [[./screenshots/s03.png]]
 *Evaluaciones (pantalla principal)*
 #+ATTR_ORG: :width 300
 #+ATTR_HTML: :width 300
+#+ATTR_LATEX: :width 5.5cm
 [[./screenshots/s04.png]]
 *Quizz*
 #+ATTR_ORG: :width 300
 #+ATTR_HTML: :width 300
+#+ATTR_LATEX: :width 5.5cm
 [[./screenshots/s05.png]]
 *Recordatrios*
 #+ATTR_ORG: :width 300
 #+ATTR_HTML: :width 300
+#+ATTR_LATEX: :width 5.5cm
 [[./screenshots/s06.png]]
 *Resultados examen*
 #+ATTR_ORG: :width 300
 #+ATTR_HTML: :width 300
+#+ATTR_LATEX: :width 5.5cm
 [[./screenshots/s07.png]]
+
+** Conclusiones
+
+En este proyecto se utilizaron los conocimientos adquiridos en los tres módulos de diplomado, por ejemplo, del módulo uno se rescatan todas las herramientas que se tienen para programar en =Swift=, como son extensiones, getters, setters, genéricos, etc. Del segundo módulo se rescata la importancia de construir una arquitectura robusta que permita separar bien la lógica de los datos, así como también varios conceptos esencial sobre el /backend/ de nuestras aplicaciones. Por último, para el tercer módulo se rescata la importancia de manejar adecuadamente la memoria, evitando ciclos de retención y manejando adecuadamente las tareas ejecutadas en el hilo principal y/o los demás hilos. Así mismo, a lo largo de la creación de esta aplicación aprendimos a aterrizar las reglas de negocio en modelos de datos que posteriormente se convirtieron en información.
