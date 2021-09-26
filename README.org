@@ -1,0 +1,59 @@
+#+TITLE: UpperQuizz
+#+DATE:  <2021-09-25 Sat>
+
+#+ATTR_HTML: width="300px"
+[[./README.assets/UpperQuizz.png]]
+
+*Notas:*
+- En este repositorio se aloja el código de la API REST.
+  Que a su vez se aloja en [[https://upper-quizz.herokuapp.com/][Heroku]]
+- El código de la aplicación iOS se encuentra en el siguiente [[https://github.com/e-muf/UpperQuizz-iOS/][link]]
+- La documentación técnica se puede leer en este /README/ o en el siguiente [[./docs/upperquizz-docs.pdf][link]]
+- La presentación del proyecto se puede leer [[./docs/upper-quizz-presentacion.pdf][aquí]]
+
+ TODO: AGREGAR 5 CAPTURAS DE PANTALLA:w
+
+** Introducción
+
+*UpperQuizz* esta orientada para personas (en su mayoría estudiantes) que
+se encuentran en el proceso de admisión a educación superior, es decir,
+que quieren ingresa a la universidad. Para esta primera entrega de la aplicación,
+nos enfocamos en usuarios cuyo objetivo se entrar a universidades como la
+UNAM, IPN, UAM o BUAP.
+
+La aplicación se plantea como una herramienta de apoyo que complemente los
+estudios y métricas de los estudiantes. En otras palabras, la aplicación, en su
+primera versión no pretende sustituir un curso completo de ingreso a nivel
+superior. Esta aplicación ayudará a realizar exámenes diágnostico y dar
+seguimiento para medir el progreso.
+
+Actualmente existen aplicaciones similares en el mercado, cómo las que se
+enlistan a continuación.
+
+** Reglas de negocio
+
+Un estudiante debe registrarse a la aplicación para poder llevar su progreso. En
+esta primera versión solo nos enfocaremos en que los usuarios puedan realizar
+exámenes de simulación.
+
+Un _examen de simulación_ esta conformado por un conjunto de preguntas. Dicho
+conjunto de preguntas se dividen en preguntas por materia, las materias
+consideradas en un inicio son:
+
+- Español,
+- Historia universal,
+- Historia de México.
+
+La pregunta se conforma de un texto (el cual describe la pregunta) y un conjunto
+de opciones que pueden ser mínimo 2 y máximo 6 opciones. Dichas opciones son
+texto plano por el momento.
+
+Al ser un examen se debe recordar que se debe tener un apartado para guardar las
+respuestas de cada pregunta.
+
+Cuando un estudiante termine de realizar el examen se le califica, se guardan
+los siguientes datos: fecha de realización,puntaje total, puntaje por cada
+materia, respuestas del estudiante y mapa de reactivos correctos e incorrectos.
+Además también se debe guardar el identificador del examen que se realizó.
+La interfaz desplegará los puntajes con gráficas o algo similar que permita ver
+el avance.
