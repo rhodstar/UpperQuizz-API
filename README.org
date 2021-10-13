@@ -136,7 +136,7 @@ carthage bootstrap --platform iOS --use-xcframworks --no-use-binaries
 
 *Registo*
 #+ATTR_ORG: :width 300
-#+ATTR_HTML: :width 300
+#+ATTR_HTML: :width 300px
 #+ATTR_LATEX: :width 5.5cm
 [[./screenshots/s02.png]]
 *Login*
